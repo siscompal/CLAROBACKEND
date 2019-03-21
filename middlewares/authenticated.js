@@ -8,7 +8,7 @@ var secret = 'clave_claroRecargas';
 exports.ensureAuth = function(req, res, next) {
     // Comprobar si llega la cabecera de autenticacion (ya q el token llega x una cabecera llamada authorization)
     if (!req.headers.authorization) {
-        return res.status(403).send({ message: 'la peticion no tiene la cabecera de autenticacion' });
+        return res.status(403).send({ message: 'La peticion no tiene la cabecera de autenticacion' });
     }
     // variable que contiene el token
     var token = req.headers.authorization.replace(/['"]+/g, '');
