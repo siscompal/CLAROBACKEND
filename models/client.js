@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var ClienteSchema = Schema({
     name: { type: String, required: true },
     lastname: { type: String, required: true },
-    identificacion: { type: String, required: true },
+    iden: { type: String, required: true },
     email: { type: String, required: true },
     username: { type: String, required: true },
     password: { type: String, required: true },
@@ -14,8 +14,8 @@ var ClienteSchema = Schema({
     porcentaje: { type: Number, required: true },
     efecty: { type: Boolean, default: false },
     status: { type: Boolean, required: true },
-    fec_crecion: { type: Date, default: Date.now() },
-    fec_update: { type: Date, default: Date.now() },
+    fec_cre: { type: Date, default: Date.now() },
+    fec_upd: { type: Date, default: Date.now() },
     user: { type: Schema.ObjectId, ref: 'User' },
     rol: {
         type: String,
@@ -26,4 +26,4 @@ var ClienteSchema = Schema({
 
 });
 
-module.exports = mongoose.model('Cliente', ClienteSchema);
+module.exports = mongoose.model('Client', ClienteSchema);

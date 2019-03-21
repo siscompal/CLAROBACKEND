@@ -7,8 +7,8 @@ var RecaSchema = Schema({
     operador: { type: String, required: true },
     monto: { type: String, required: true },
     respuesta: { type: String, required: true },
-    fec_creacion: { type: Date, default: Date.now() },
-    fec_update: { type: Date, default: Date.now() }
+    fec_cre: { type: Date, default: Date.now() },
+    fec_upd: { type: Date, default: Date.now() }
 
 });
 
