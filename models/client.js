@@ -17,7 +17,19 @@ var ClienteSchema = Schema({
     fec_cre: { type: Date, default: Date.now() },
     fec_upd: { type: Date, default: Date.now() },
     user: { type: Schema.ObjectId, ref: 'User' },
-    rol: {
+
+    /*tipo:  {
+        type: String,
+        enum: ['CLI_MAYORISTA', 'CLI_DISTRIBUIDOR', 'CLI_CLIENTE'],
+        required: true
+    },
+    role: {
+        type: String,
+        enum: ['ROLE_CLIENTE'],
+        required: true
+    },
+    */
+    role: {
         type: String,
         enum: ['CLI_MAYORISTA', 'CLI_DISTRIBUIDOR', 'CLI_CLIENTE'],
         required: true

@@ -87,6 +87,7 @@ function login(req, res) {
     // variable que guarde el campo que necesito para verificar
     var username = parametros.username;
     var pass = parametros.password;
+    var role = parametros.role;
 
     // 1. comprobar que el usuario existe, buscando por la variable username
     // el parametro  existe puede ser cualquier nombre
@@ -147,7 +148,7 @@ function updateUser(req, res) {
                     message: 'Usuario actualizado correctamente',
                     user: userUpdated
                 });
-                return res.status(200).send({ user: userUpdated });
+                // return res.status(200).send({ user: userUpdated });
 
             }
         }

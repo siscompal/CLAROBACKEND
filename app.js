@@ -9,6 +9,7 @@ var app = express();
 // cargar rutas (variables de configuracion de rutas)
 var user_routes = require('./routes/user');
 var product_routes = require('./routes/product');
+var client_routes = require('./routes/client');
 
 // middlewares de body parser
 // urlencoded es una manera de decir q la info q recibo de los formularios la voy a poder interpretar 
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 // aqui ya esta cargada la configuracion de rutas en express, lista para comenzar
 app.use('/user', user_routes);
 app.use('/producto', product_routes);
+app.use('/cliente', client_routes);
 
 
 /*app.get('/probando', (req, res) => {

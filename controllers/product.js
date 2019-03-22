@@ -38,15 +38,26 @@ function createProduct(req, res) {
         product.incentivo = parametros.incentivo;
         product.descripcion = parametros.descripcion;
 
-        product.save((err, productStored) => {
+        Product.findOne({ codigo: parametros.codigo.toLowerCase() }, (err, productoDB) => {
             if (err) {
-                res.status(500).send({ message: 'Error en el servidor' });
+                res.status(500).send({ message: 'Error al verificar producto' });
             } else {
-                if (!productStored) {
-                    res.status(404).send({ message: 'No se ha guardado el producto' });
+                if (!productoDB) {
+                    product.save((err, productStored) => {
+                        if (err) {
+                            res.status(500).send({ message: 'Error en el servidor' });
+                        } else {
+                            if (!productStored) {
+                                res.status(404).send({ message: 'No se ha guardado el producto' });
+                            } else {
+                                res.status(200).send({ productoGuardado: productStored });
+                            }
+                        }
+                    });
                 } else {
-                    res.status(200).send({ product: productStored });
+                    res.status(200).send({ message: 'Producto existente' });
                 }
+
             }
         });
     } else {
@@ -58,6 +69,7 @@ function createProduct(req, res) {
 // listar todos los productos
 function getProducts(req, res) {
     Product.find({}).populate({ path: 'user' }).exec((err, products) => {
+        // .populate('usuario', 'nombre apellidos') para solo devolver los campos que quiero.
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
         } else {
