@@ -130,9 +130,15 @@ function getClients(req, res) {
 
 }
 
+function deleteClients() {
+    res.status(404).send({ message: 'Testing delete function' });
+}
+
+
 module.exports = {
     pruebas,
     createClient,
     updateClient,
-    getClients
+    getClients,
+    deleteClients
 }

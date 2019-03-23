@@ -14,7 +14,6 @@ api.post('/login', UserController.login);
 // para actualizar dentro de una api restful se usa el metodo PUT
 api.put('/update-user/:id', md_auth.ensureAuth, UserController.updateUser);
 api.get('/asesores', md_auth.ensureAuth, UserController.getAsesores);
-api.get('/clientes', md_auth.ensureAuth, UserController.getClientes);
 api.get('/cargas', md_auth.ensureAuth, UserController.getCargas);
 
 

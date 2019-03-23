@@ -172,6 +172,7 @@ function getAsesores(req, res) {
         }
     });
 }
+/*
 // listar usuarios tipo cliente
 function getClientes(req, res) {
     User.find({ role: 'ROLE_CLIENTE' }).exec((err, users) => {
@@ -185,7 +186,7 @@ function getClientes(req, res) {
             }
         }
     });
-}
+} */
 
 
 
@@ -204,6 +205,10 @@ function getCargas(req, res) {
     });
 }
 
+// listar all usuarios
+function getUsers() {
+
+}
 
 function deleteUser() {
 
@@ -215,6 +220,5 @@ module.exports = {
     login,
     updateUser,
     getAsesores,
-    getClientes,
     getCargas
 };
