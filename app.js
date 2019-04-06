@@ -31,11 +31,12 @@ app.use((req, res, next) => {
 });
 // rutas base
 // aqui ya esta cargada la configuracion de rutas en express, lista para comenzar
+app.use('/api', recargas_routes);
 app.use('/api/users', user_routes);
 app.use('/api/products', product_routes);
 app.use('/api/clients', client_routes);
 app.use('/api/saldo', saldo_routes);
-app.use('/api', recargas_routes);
+
 
 /*app.get('/probando', (req, res) => {
     res.status(200).send({ message: 'Este es el metodo probando' });
