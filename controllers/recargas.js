@@ -55,48 +55,37 @@ function DoRecarga(req, res) {
     })
 
 
-    /*  guardar recarga en BD
-recarga.save(); */
+
 } // fin de doRecarga
 
 
-// Query para sacar datos de la Db
-function pruebas(req, res) {
+function getSaldo(req, res) {
 
-    MongoClient.connect(url, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("claro");
-        dbo.collection("recargas").findOne({}, function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            db.close();
-        });
-    });
+    var options = {
+        url: 'http://70.38.107.45:8090/misald/9720/03becfc25edfa5092f7c5f',
+        method: 'GET'
+    }
 
-    res.status(200).send({
-        message: 'probando el controlador de recargas'
-    });
+    request(options, function(error, response, body) {
+        console.log("llega a request", body);
+        if (!error && response.statusCode == 200) {
+
+            console.log(body);
+            var nojson = JSON.parse(body);
+            console.log("este es el nojson " + nojson.respuesta);
+            var respu = nojson.respuesta;
+            res.status(200).send({
+                respuesta: respu
+            });
+
+        }
+
+    })
+
 }
-/* 
- function pruebas(req, res) {
-    var str = "";
-    MongoClient.connect(url, function(err, db) {
 
-        var cursor = db.collection('recargas').find();
-    
-        cursor.each(function(err, item) {
-    
-            if (item != null) {
-                str = str + "    Employee id  " + item._id + "</br>";
-            }
-    
-        });
-    }); 
-    res.status(200).send({
-        message: 'probando el controlador de recargas'
-    });
-} */
 
 module.exports = {
-    DoRecarga
+    DoRecarga,
+    getSaldo
 };
