@@ -60,7 +60,7 @@ function DoRecarga(req, res) {
 
 
 function getSaldo(req, res) {
-
+    console.log("Show saldo");
     var options = {
         url: 'http://70.38.107.45:8090/misald/9720/03becfc25edfa5092f7c5f',
         method: 'GET'
@@ -78,6 +78,13 @@ function getSaldo(req, res) {
                 respuesta: respu
             });
 
+        } else {
+            var nojson = JSON.parse(body);
+            var respu = nojson.respuesta;
+            console.log("error", respu);
+            res.status(400).send({
+                respuesta: respu
+            })
         }
 
     })
