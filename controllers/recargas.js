@@ -28,8 +28,8 @@ function DoRecarga(req, res) {
     var options = {
         url: 'http://70.38.107.45:8090/recar',
         body: JSON.stringify({
-            'key': '03becfc25edfa5092f7c5f',
-            'id': '9720',
+            'key': '874331422b9b30de87b0177b0974b925',
+            'id': '5814',
             'monto': parametros.monto,
             'celular': parametros.numero,
             'producto': parametros.producto
@@ -62,7 +62,7 @@ function DoRecarga(req, res) {
 function getSaldo(req, res) {
     console.log("Show saldo");
     var options = {
-        url: 'http://70.38.107.45:8090/misald/9720/03becfc25edfa5092f7c5f',
+        url: 'http://70.38.107.45:8090/misald/5814/874331422b9b30de87b0177b0974b925',
         method: 'GET',
     }
 
