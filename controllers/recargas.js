@@ -63,7 +63,7 @@ function getSaldo(req, res) {
     console.log("Show saldo");
     var options = {
         url: 'http://70.38.107.45:8090/misald/9720/03becfc25edfa5092f7c5f',
-        method: 'GET'
+        method: 'GET',
     }
 
     request(options, function(error, response, body) {
