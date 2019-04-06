@@ -6,7 +6,7 @@ function getip_black(req, res) {
     Ip_black.find({}).exec((err, ip_negra) => {
         if (err) {
             res.status(500).send({
-                message: 'error en la peticion'
+                message: 'Error en la peticion'
             });
         } else {
 
@@ -16,7 +16,6 @@ function getip_black(req, res) {
                     message: 'No hay IP negras'
                 });
             } else {
-
                 res.status(200).send({
                     ip: ip_negra
                 });
@@ -36,10 +35,10 @@ function delete_ip_black(req, res) {
     Ip_black.findByIdAndRemove(Ip_Id, (err, delete_ip) => {
         if (err) {
             res.status(500).send({
-                message: 'error de peticion'
+                message: 'Error de peticion'
             });
         } else {
-            console.log("este es el delete_ip", delete_ip);
+            console.log("Este es el delete_ip", delete_ip);
             if (!delete_ip) {
                 res.status(404).send({
                     message: 'Ip no eliminada'

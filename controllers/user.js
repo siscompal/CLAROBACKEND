@@ -23,6 +23,19 @@ function createUser(req, res) {
     // almacenamos los parametros en una variable
     var parametros = req.body;
 
+    // input validation
+    const schema = Joi.object().keys({
+        name: Joi.string().trim().required(),
+        lastname: Joi.string().trim().required(),
+        iden: Joi.string().trim().required(),
+        username: Joi.string().alphanum().min(6).max(15).required(),
+        password: Joi.string().regex(6, 15),
+        email: Joi.string().email({ minDomainAtoms: 2 }),
+        cel: Joi.number().integer().min(10).max(10).required(),
+        status: Joi.bool().required(),
+        role: Joi.string().trim().required(),
+    })
+
     //Crear objeto usuario
     var user = new User();
 
@@ -87,7 +100,7 @@ function login(req, res) {
     // variable que guarde el campo que necesito para verificar
     var username = parametros.username;
     var pass = parametros.password;
-    var role = parametros.role;
+    //var role = parametros.role;
 
     // 1. comprobar que el usuario existe, buscando por la variable username
     // el parametro  existe puede ser cualquier nombre
@@ -160,59 +173,76 @@ function updateUser(req, res) {
 // listar usuarios tipo asesor
 function getAsesores(req, res) {
 
-    User.find({ role: 'ROLE_ASESOR' }).exec((err, users) => {
+    User.find({ role: 'ROLE_ASESOR', status: true }).exec((err, asesores) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
         } else {
-            if (!users) {
+            if (!asesores) {
                 res.status(404).send({ message: 'No hay asesores' });
             } else {
-                res.status(200).send({ users });
+                res.status(200).send({ asesores });
             }
         }
     });
 }
-/*
-// listar usuarios tipo cliente
-function getClientes(req, res) {
-    User.find({ role: 'ROLE_CLIENTE' }).exec((err, users) => {
-        if (err) {
-            res.status(500).send({ message: 'Error en la peticion' });
-        } else {
-            if (!users) {
-                res.status(404).send({ message: 'No hay clientes registrados' });
-            } else {
-                res.status(200).send({ users });
-            }
-        }
-    });
-} */
-
-
 
 // listar usuarios tipo cargas
 function getCargas(req, res) {
-    User.find({ role: 'ROLE_CARGAS' }).exec((err, users) => {
+    User.find({ role: 'ROLE_CARGAS' }).exec((err, cargas) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
         } else {
-            if (!users) {
+            if (!cargas) {
                 res.status(404).send({ message: 'No hay puntos de venta' });
             } else {
-                res.status(200).send({ users });
+                res.status(200).send({ cargas });
             }
         }
     });
 }
 
 // listar all usuarios
-function getUsers() {
-
+function getUsers(req, res) {
+    User.find({}).exec((err, users) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en la peticion' });
+        } else {
+            if (!users) {
+                res.status(404).send({ message: 'No hay usuarios' });
+            } else {
+                res.status(200).send({ users });
+            }
+        }
+    });
 }
 
-function deleteUser() {
 
+function deleteUser(req, res) {
+    var userId = req.params.id;
+
+
+    User.findByIdAndUpdate(userId, { status: false }, { new: true }, (err, userInactive) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Error al eliminar cliente',
+            });
+        } else {
+            if (!userInactive) {
+                return res.status(404).send({
+                    message: 'No se ha podido eliminar el cliente',
+                });
+            } else {
+                return res.status(200).send({
+                    message: 'Cliente eliminado correctamente',
+                    usuarioInactivo: userInactive
+                });
+
+            }
+        }
+    });
 }
+
+
 
 module.exports = {
     pruebas,
@@ -220,5 +250,7 @@ module.exports = {
     login,
     updateUser,
     getAsesores,
-    getCargas
+    getCargas,
+    getUsers,
+    deleteUser
 };

@@ -6,19 +6,21 @@ var moment = require('moment');
 
 // modelos
 var Recarga = require('../models/recargas');
-var Productos = require('../models/productos');
+// var Productos = require('../models/productos');
 
 // servicios
 var jwt = require('../services/jwt');
-var peticion = require('../services/peticion');
+
 
 function DoRecarga(req, res) {
+
     var parametros = req.body;
+
     var recarga = new Recarga();
+
     recarga.numero = parametros.numero;
-    recarga.empresa = parametros.empresa;
-    recarga.operador = parametros.operador;
     recarga.monto = parametros.monto;
+    recarga.producto = parametros.producto;
     recarga.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
     recarga.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
 
@@ -29,8 +31,8 @@ function DoRecarga(req, res) {
             'key': '03becfc25edfa5092f7c5f',
             'id': '9720',
             'monto': parametros.monto,
-            'empresa': 'claro',
-            'celular': parametros.numero
+            'celular': parametros.numero,
+            'producto': parametros.producto
         }),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }

@@ -17,18 +17,9 @@ var ClienteSchema = Schema({
     fec_cre: { type: Date, default: Date.now() },
     fec_upd: { type: Date, default: Date.now() },
     user: { type: Schema.ObjectId, ref: 'User' },
-
-    /*tipo:  {
-        type: String,
-        enum: ['CLI_MAYORISTA', 'CLI_DISTRIBUIDOR', 'CLI_CLIENTE'],
-        required: true
-    },
-    role: {
-        type: String,
-        enum: ['ROLE_CLIENTE'],
-        required: true
-    },
-    */
+    saldo_actual: { type: Number, required: true },
+    comision_actual: { type: Number, required: true },
+    incentivo_actual: { type: Number, required: true },
     role: {
         type: String,
         enum: ['CLI_MAYORISTA', 'CLI_DISTRIBUIDOR', 'CLI_CLIENTE'],

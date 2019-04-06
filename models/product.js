@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var ProductSchema = Schema({
     name: { type: String, required: true },
+    // operador: {type: Schema.ObjectId, ref: 'Operador'},
     precio: { type: Number, required: true },
     codigo: { type: Number, required: true },
     status: { type: Boolean, dafault: false },

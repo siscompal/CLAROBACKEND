@@ -15,6 +15,8 @@ api.post('/login', UserController.login);
 api.put('/update-user/:id', md_auth.ensureAuth, UserController.updateUser);
 api.get('/asesores', md_auth.ensureAuth, UserController.getAsesores);
 api.get('/cargas', md_auth.ensureAuth, UserController.getCargas);
+api.get('/usuarios', md_auth.ensureAuth, UserController.getUsers);
+api.put('/delete/:id', md_auth.ensureAuth, UserController.deleteUser);
 
 
 
