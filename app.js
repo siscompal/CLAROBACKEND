@@ -19,8 +19,16 @@ var recargas_routes = require('./routes/recargas');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// configurar cabeceras y cors
 
+//configurar cabeceras y cors
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+
+});
 // rutas base
 // aqui ya esta cargada la configuracion de rutas en express, lista para comenzar
 app.use('/api/users', user_routes);
