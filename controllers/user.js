@@ -4,6 +4,7 @@
 var bcrypt = require('bcrypt-nodejs');
 var moment = require('moment');
 
+
 //MODELOS
 var User = require('../models/user');
 
@@ -24,17 +25,17 @@ function createUser(req, res) {
     var parametros = req.body;
 
     // input validation
-    const schema = Joi.object().keys({
-        name: Joi.string().trim().required(),
-        lastname: Joi.string().trim().required(),
-        iden: Joi.string().trim().required(),
-        username: Joi.string().alphanum().min(6).max(15).required(),
-        password: Joi.string().regex(6, 15),
-        email: Joi.string().email({ minDomainAtoms: 2 }),
-        cel: Joi.number().integer().min(10).max(10).required(),
-        status: Joi.bool().required(),
-        role: Joi.string().trim().required(),
-    })
+    /* const schema = Joi.object().keys({
+         name: Joi.string().trim().required(),
+         lastname: Joi.string().trim().required(),
+         iden: Joi.string().trim().required(),
+         username: Joi.string().alphanum().min(6).max(15).required(),
+         password: Joi.string().regex(6, 15),
+         email: Joi.string().email({ minDomainAtoms: 2 }),
+         cel: Joi.number().integer().min(10).max(10).required(),
+         status: Joi.bool().required(),
+         role: Joi.string().trim().required(),
+     })*/
 
     //Crear objeto usuario
     var user = new User();
