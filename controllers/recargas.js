@@ -38,6 +38,17 @@ function DoRecarga(req, res) {
         headers: { 'Content-Type': 'application/json' }
     }
 
+    request(options, function(error, response, body) {
+        console.log("llega a request", body);
+        if (!error && response.statusCode == 200) {
+
+            console.log(body);
+            var nojson = JSON.parse(body);
+            console.log("este es el nojson " + nojson.respuesta);
+
+        }
+
+    })
 
 
     /*  guardar recarga en BD
