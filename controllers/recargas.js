@@ -45,6 +45,10 @@ function DoRecarga(req, res) {
             console.log(body);
             var nojson = JSON.parse(body);
             console.log("este es el nojson " + nojson.respuesta);
+            var res = nojson.respuesta;
+            response.status(200).send({
+                respuesta: res
+            });
 
         }
 
