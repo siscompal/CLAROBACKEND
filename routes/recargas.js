@@ -7,7 +7,7 @@ var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
 
 api.post('/recargas', RecargasController.DoRecarga);
-api.post('/saldo', RecargasController.getSaldo);
+api.post('/balance', RecargasController.getSaldo);
 
 
 module.exports = api;
