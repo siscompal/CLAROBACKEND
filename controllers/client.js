@@ -92,7 +92,7 @@ function login(req, res) {
     var username = parametros.username;
     var pass = parametros.password;
 
-    Client.findOne({ username: username.toLowerCase() }, (err, existe) => {
+    Client.findOne({ username: username }, (err, existe) => {
         if (err) {
             res.status(500).send({ message: 'Error al verificar el usuario' });
         } else {
