@@ -11,6 +11,7 @@ var ProductSchema = Schema({
     fec_upd: { type: Date, default: Date.now() },
     user: { type: Schema.ObjectId, ref: 'User' },
     incentivo: { type: Number },
+    tipo: { type: String, required: true },
     descripcion: { type: String, required: true }
 
 });

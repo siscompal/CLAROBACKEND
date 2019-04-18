@@ -10,9 +10,9 @@ var port = process.env.PORT || 3789;
 
 mongoose.Promise = global.Promise;
 //conexion a la db
-mongoose.connect('mongodb://localhost:27017/claro')
+mongoose.connect('mongodb://localhost:27017/claro', { useNewUrlParser: true })
     .then(() => {
-       
+
         console.log('Conexion exitosa a la base de datos');
 
         // crear el servidor web y lanzarlo

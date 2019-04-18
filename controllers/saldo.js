@@ -73,10 +73,6 @@ function asignar_saldo(req, res) {
                                     clienteConSaldo: cliente_consaldo
                                 });
 
-
-
-
-
                             }
                         }
                     });
@@ -96,6 +92,7 @@ function debitar_saldo(req, res) {
     var saldo = new Saldo();
 
     saldo.valor = req.body.valor;
+
     console.log("parametros del body " + saldo.valor);
     saldo.obs = parametros.obs;
     saldo.client = clientId;
@@ -179,9 +176,120 @@ function debitar_saldo(req, res) {
 
 }
 
+function pasarSaldo(req, res) {
+
+    var parametros = req.body;
+    var bolsa_origen = parametros.origen;
+    var bolsa_destino = parametros.destino;
+    var cliente = req.user.sub;
+
+    Client.findById(cliente, (err, cliente_buscado) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Error al buscar cliente',
+            });
+        } else {
+            if (!cliente_buscado) {
+                return res.status(404).send({
+                    message: 'No se ha encontrar el cliente',
+                });
+            } else {
+
+                if (bolsa_origen == "comision") {
+                    var updateComision = cliente_buscado.comision_actual - cliente_buscado.comision_actual;
+                    var updateSaldo = cliente_buscado.saldo_actual + cliente_buscado.comision_actual;
+
+                    console.log("comision actual " + cliente_buscado.comision_actual);
+                    console.log("csaldo actual " + cliente_buscado.saldo_actual);
+                    console.log("comision a actualizar " + updateComision);
+                    console.log("saldo a actualizar " + updateSaldo);
+
+                    Client.findByIdAndUpdate(cliente, { saldo_actual: updateSaldo, comision_actual: updateComision }, { new: true }, (err, clienteBagUpdated) => {
+                        if (err) {
+                            return res.status(500).send({
+                                message: 'Error al actualizar bolsa',
+                            });
+                        } else {
+                            if (!clienteBagUpdated) {
+                                return res.status(404).send({
+                                    message: 'No se ha podido realizar operacion',
+                                });
+                            } else {
+                                return res.status(200).send({
+                                    message: 'Bolsa actualizada correctamente',
+                                    clienteBagUpdated: clienteBagUpdated
+                                });
+
+                            }
+                        }
+                    });
+                } else if (bolsa_origen == "incentivo") {
+                    if (bolsa_destino == "saldo") {
+
+                        var updateIncentivo = cliente_buscado.incentivo_actual - cliente_buscado.incentivo_actual;
+                        var updateSaldo = cliente_buscado.saldo_actual + cliente_buscado.incentivo_actual;
+
+                        Client.findByIdAndUpdate(cliente, { saldo_actual: updateSaldo, incentivo_actual: updateIncentivo }, { new: true }, (err, clienteBagUpdated) => {
+                            if (err) {
+                                return res.status(500).send({
+                                    message: 'Error al actualizar bolsa',
+                                });
+                            } else {
+                                if (!clienteBagUpdated) {
+                                    return res.status(404).send({
+                                        message: 'No se ha podido realizar operacion',
+                                    });
+                                } else {
+                                    return res.status(200).send({
+                                        message: 'Bolsa actualizada correctamente',
+                                        clienteBagUpdated: clienteBagUpdated
+                                    });
+
+                                }
+                            }
+                        });
+
+
+                        // si bolsa destino es comision
+                    } else {
+                        var updateIncentivo = cliente_buscado.incentivo_actual - cliente_buscado.incentivo_actual;
+                        var updateComision = cliente_buscado.comision_actual + cliente_buscado.incentivo_actual;
+
+                        Client.findByIdAndUpdate(cliente, { incentivo_actual: updateIncentivo, comision_actual: updateComision }, { new: true }, (err, clienteBagUpdated) => {
+                            if (err) {
+                                return res.status(500).send({
+                                    message: 'Error al actualizar bolsa',
+                                });
+                            } else {
+                                if (!clienteBagUpdated) {
+                                    return res.status(404).send({
+                                        message: 'No se ha podido realizar operacion',
+                                    });
+                                } else {
+                                    return res.status(200).send({
+                                        message: 'Bolsa actualizada correctamente',
+                                        clienteBagUpdated: clienteBagUpdated
+                                    });
+
+                                }
+                            }
+                        });
+
+                    }
+
+                }
+
+            }
+        }
+
+
+    });
+
+}
 
 
 module.exports = {
     asignar_saldo,
-    debitar_saldo
+    debitar_saldo,
+    pasarSaldo
 }

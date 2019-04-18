@@ -26,12 +26,13 @@ function createProduct(req, res) {
 
 
 
-    if (parametros.name && parametros.precio && parametros.codigo && parametros.status && parametros.descripcion) {
+    if (parametros.name && parametros.precio && parametros.codigo && parametros.status && parametros.descripcion && parametros.tipo) {
         // setteo las variables
         product.name = parametros.name;
         product.precio = parametros.precio;
         product.codigo = parametros.codigo;
         product.status = parametros.status;
+        product.tipo = parametros.tipo;
         product.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
         product.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
         product.user = req.user.sub; //  req.user.sub para guardar el id del usuario logueado
@@ -66,7 +67,8 @@ function createProduct(req, res) {
 
 }
 
-// listar todos los productos
+// listar todos los productos (admin)
+
 function getProducts(req, res) {
     Product.find({}).populate({ path: 'user' }).exec((err, products) => {
         // .populate('usuario', 'nombre apellidos') para solo devolver los campos que quiero.
@@ -83,7 +85,7 @@ function getProducts(req, res) {
 }
 
 
-// obtener un solo produto
+// obtener un solo produto (admin)
 function getProduct(req, res) {
 
     var productId = req.params.id; // ojo aqui es params
@@ -101,11 +103,77 @@ function getProduct(req, res) {
     });
 }
 
+function filtrarProducto(req, res) {
+
+    var parametros = req.body;
+    var tipo = parametros.tipo;
+
+    if (tipo == "allInclusive") {
+
+        Product.find({ tipo: tipo }, (err, tipoAllinclusive) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!tipoAllinclusive) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ all_inclusive: tipoAllinclusive });
+                }
+            }
+        });
+
+
+    } else if (tipo == "datos") {
+        Product.find({ tipo: tipo }, (err, tipoDatos) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!tipoDatos) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ Datos: tipoDatos });
+                }
+            }
+        });
+
+    } else if (tipo == "minutos") {
+        Product.find({ tipo: tipo }, (err, tipoMinutos) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!tipoMinutos) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ Minutos: tipoMinutos });
+                }
+            }
+        });
+
+    } else if (tipo == "aplicaciones") {
+        Product.find({ tipo: tipo }, (err, tipoApp) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!tipoApp) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ Apps: tipoApp });
+                }
+            }
+        });
+
+    } else {
+        res.status(404).send({ message: 'Tipo de producto no existe' });
+    }
+
+
+} // fin filtrarProducto
+
 function updateProduct(req, res) {
 
-    var productId = req.params.id;
+    var productId = req.params.id; // lo q viene por url
     var update = req.body;
-    // Product hace referencia a la coleccion
+
     Product.findByIdAndUpdate(productId, update, { new: true }, (err, productUpdated) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
@@ -142,5 +210,6 @@ module.exports = {
     getProducts,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    filtrarProducto
 };
