@@ -19,7 +19,7 @@ function asignar_saldo(req, res) {
     saldo.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
     var usu_cli = req.user.sub;
 
-
+    // buscar usuario que asigna
     User.findById(usu_cli, (err, userFound) => {
         if (err) {
             res.status(500).send({
@@ -27,7 +27,7 @@ function asignar_saldo(req, res) {
             });
         } else {
             if (!userFound) {
-                // si no encontro en la tabla usuario, procede a buscar en tabla client
+                // si no encontró usuario que asigna,  buscar cliente que asigna 
                 Client.findById(usu_cli, (err, clientFound) => {
                     if (err) {
                         res.status(500).send({
@@ -36,7 +36,7 @@ function asignar_saldo(req, res) {
                     } else {
                         if (!clientFound) {
                             res.status(404).send({
-                                message: 'el cliente no se encontro'
+                                message: ' No se encontro el cliente'
                             });
                         } else {
                             // Buscar si el cliente a asignar existe.
@@ -90,8 +90,8 @@ function asignar_saldo(req, res) {
                                                             message: 'cliente no actualizado'
                                                         });
                                                     } else {
-                                                        saldo.tipo = "asignar";
-                                                        saldo.cli_saldo = clientFound.id;
+                                                        saldo.tipo = "asignado";
+                                                        saldo.client_Origen = clientFound.id;
                                                         console.log("cli: ", clientFound.id);
                                                         saldo.save((err, saldoStored) => {
                                                             if (err) {
@@ -102,7 +102,7 @@ function asignar_saldo(req, res) {
                                                                     res.status(404).send({ message: 'No se ha guardado la asignacion' });
                                                                 } else {
                                                                     return res.status(200).send({
-                                                                        message: 'Saldo guardado',
+                                                                        saldoAsignado: saldoStored,
                                                                         clienteConSaldo: cliente_consaldo
                                                                     });
 
@@ -122,8 +122,9 @@ function asignar_saldo(req, res) {
                         }
                     }
                 });
-            } else {
-                // Si encontro el usuario en la tabla usuario 
+            } else { // Si encontro el usuario que asigna 
+
+                // buscamos el cliente a asignar
                 Client.findById(saldo.cliente, (err, cliente_buscado) => {
                     if (err) {
                         console.log(clientId);
@@ -137,7 +138,7 @@ function asignar_saldo(req, res) {
                                 message: 'el cliente no se encontro'
                             });
 
-                        } else { // si cliente es encontrado
+                        } else { // si cliente a asignar es encontrado
 
                             if (saldo.valor <= 20000) {
                                 res.status(200).send({
@@ -174,8 +175,8 @@ function asignar_saldo(req, res) {
                                                 message: 'cliente no actualizado'
                                             });
                                         } else {
-                                            saldo.tipo = "asignar";
-                                            saldo.user = userFound._id;
+                                            saldo.tipo = "asignado";
+                                            saldo.user_Origen = userFound._id;
                                             console.log("usu: ", userFound._id);
                                             saldo.save((err, saldoStored) => {
                                                 if (err) {
@@ -186,7 +187,7 @@ function asignar_saldo(req, res) {
                                                         res.status(404).send({ message: 'No se ha guardado la asignacion' });
                                                     } else {
                                                         res.status(200).send({
-                                                            message: 'Saldo guardado',
+                                                            saldoAsignado: saldoStored,
                                                             clienteConSaldo: cliente_consaldo
                                                         });
 
@@ -219,100 +220,236 @@ function debitar_saldo(req, res) {
     saldo.obs = parametros.obs;
     saldo.cliente = clientId;
     saldo.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
+    var usu_cli = req.user.sub;
+
     console.log("parametros del body " + saldo.valor);
 
-    // Buscar si el cliente exite.
-    Client.findById(saldo.cliente, (err, cliente_buscado) => {
+    // buscar usuario que debita
+    User.findById(usu_cli, (err, userFound) => {
         if (err) {
-            console.log(clientId);
-
             res.status(500).send({
-                message: 'Error en la peticion buscando el cliente'
+                message: 'Error en la peticion buscando el usuario'
             });
         } else {
-            if (!cliente_buscado) {
-                res.status(404).send({
-                    message: 'el cliente no se encontro'
-                });
-
-            } else { // si cliente es encontrado
-
-                if (saldo.valor >= cliente_buscado.saldo_actual || saldo.valor <= 0) {
-                    res.status(200).send({
-                        message: 'Valor no permitido'
-                    });
-                } else {
-                    //cuando todo esta ok
-                    console.log("---------// este es ID ", cliente_buscado._id, "//-------");
-                    console.log("valor que viene de postman", saldo.valor);
-                    console.log("valor que viene de cliente", cliente_buscado.saldo_actual);
-                    // --------------------------------OPERACIONES -------------------------------------------------//
-
-                    var porcen = cliente_buscado.porcentaje / 100;
-                    var comisionNeta = saldo.valor * porcen;
-                    saldo.comision = comisionNeta;
-                    var update = cliente_buscado.saldo_actual - saldo.valor;
-                    var updateComision = cliente_buscado.comision_actual - comisionNeta;
-
-
-                    console.log(" saldo que se va a  debitar : saldo", update);
-                    console.log(" comision que se va a debitar : comision", updateComision);
-
-                    if (update <= 0) {
-                        res.status(200).send({
-                            message: 'El valor es erroneo'
+            if (!userFound) {
+                // si no encontro usuario que debita, buscar cliente que debita
+                Client.findById(usu_cli, (err, clientFound) => {
+                    if (err) {
+                        res.status(500).send({
+                            message: 'Error en la peticion buscando el cliente'
                         });
-                    } else {
-                        Client.findByIdAndUpdate(cliente_buscado.id, { saldo_actual: update, comision_actual: updateComision }, { new: true }, (err, cliente_debitado) => {
-                            if (err) {
-                                // console.log("i was here");
-                                // console.log("id de cliente: " + clientId);
-                                console.log("Saldo actual: " + cliente_buscado.saldo_actual);
-                                console.log("saldo por parametros: " + saldo.valor);
-                                // console.log("cliente: " + cliente_buscado.id);
-                                res.status(500).send({
-                                    message: 'error de peticion'
-                                });
 
-                            } else {
-                                if (!cliente_debitado) {
-                                    res.status(404).send({
-                                        message: 'cliente no actualizado'
+                    } else {
+                        if (!clientFound) {
+                            res.status(404).send({
+                                message: 'el cliente no se encontro'
+                            });
+                        } else { // Si encontro el cliente que debita
+
+                            // Buscar cliente a debitar 
+                            Client.findById(saldo.cliente, (err, cliente_buscado) => {
+                                if (err) {
+                                    console.log(clientId);
+
+                                    res.status(500).send({
+                                        message: 'Error en la peticion buscando el cliente'
                                     });
                                 } else {
-                                    saldo.tipo = "debitado";
-                                    saldo.save((err, saldoStored) => {
+                                    if (!cliente_buscado) {
+                                        res.status(404).send({
+                                            message: 'el cliente no se encontro'
+                                        });
+
+                                    } else { // si cliente es encontrado
+
+                                        if (saldo.valor >= cliente_buscado.saldo_actual || saldo.valor <= 0) {
+                                            res.status(200).send({
+                                                message: 'Valor no permitido'
+                                            });
+                                        } else {
+                                            //cuando todo esta ok
+                                            console.log("---------// este es ID ", cliente_buscado._id, "//-------");
+                                            console.log("valor que viene de postman", saldo.valor);
+                                            console.log("valor que viene de cliente", cliente_buscado.saldo_actual);
+                                            // --------------------------------OPERACIONES -------------------------------------------------//
+
+                                            var porcen = cliente_buscado.porcentaje / 100;
+                                            var comisionNeta = saldo.valor * porcen;
+                                            saldo.comision = comisionNeta;
+                                            var update = cliente_buscado.saldo_actual - saldo.valor;
+                                            var updateComision = cliente_buscado.comision_actual - comisionNeta;
+
+
+                                            console.log(" saldo que se va a  debitar : saldo", update);
+                                            console.log(" comision que se va a debitar : comision", updateComision);
+
+                                            if (update <= 0) {
+                                                res.status(200).send({
+                                                    message: 'El valor es erroneo'
+                                                });
+                                            } else {
+                                                Client.findByIdAndUpdate(cliente_buscado.id, { saldo_actual: update, comision_actual: updateComision }, { new: true }, (err, cliente_debitado) => {
+                                                    if (err) {
+                                                        // console.log("i was here");
+                                                        // console.log("id de cliente: " + clientId);
+                                                        console.log("Saldo actual: " + cliente_buscado.saldo_actual);
+                                                        console.log("saldo por parametros: " + saldo.valor);
+                                                        // console.log("cliente: " + cliente_buscado.id);
+                                                        res.status(500).send({
+                                                            message: 'error de peticion'
+                                                        });
+
+                                                    } else {
+                                                        if (!cliente_debitado) {
+                                                            res.status(404).send({
+                                                                message: 'cliente no actualizado'
+                                                            });
+                                                        } else {
+                                                            saldo.tipo = "debitado";
+                                                            saldo.client_Origen = clientFound._id;
+                                                            console.log("cli: ", clientFound._id);
+                                                            saldo.save((err, saldoStored) => {
+                                                                if (err) {
+                                                                    res.status(500).send({ message: 'Error en la peticion' });
+
+                                                                } else {
+                                                                    if (!saldoStored) {
+                                                                        res.status(404).send({ message: 'No se ha guardado la asignacion' });
+                                                                    } else {
+                                                                        res.status(200).send({
+                                                                            saldoDebitado: saldoStored,
+                                                                            clienteDebitado: cliente_debitado
+                                                                        });
+
+                                                                    }
+                                                                }
+                                                            });
+
+
+
+                                                        }
+                                                    }
+                                                });
+
+                                            } // else de findByIdAndUpdate
+                                        } // tercer else
+                                    } // segundo else
+                                } // primer else
+
+
+                            }); // cierre findById
+
+                        }
+                    } // fin de else !clientFound
+
+                });
+
+            } else { // Si encontro el usuario que debita
+
+
+                // Buscar  cliente a debitar
+                Client.findById(saldo.cliente, (err, cliente_buscado) => {
+                    if (err) {
+                        console.log(clientId);
+
+                        res.status(500).send({
+                            message: 'Error en la peticion buscando el cliente'
+                        });
+                    } else {
+                        if (!cliente_buscado) {
+                            res.status(404).send({
+                                message: 'el cliente no se encontro'
+                            });
+
+                        } else { // si cliente a debitar es encontrado
+
+                            if (saldo.valor >= cliente_buscado.saldo_actual || saldo.valor <= 0) {
+                                res.status(200).send({
+                                    message: 'Valor no permitido'
+                                });
+                            } else {
+                                //cuando todo esta ok
+                                console.log("---------// este es ID ", cliente_buscado._id, "//-------");
+                                console.log("valor que viene de postman", saldo.valor);
+                                console.log("valor que viene de cliente", cliente_buscado.saldo_actual);
+                                // --------------------------------OPERACIONES -------------------------------------------------//
+
+                                var porcen = cliente_buscado.porcentaje / 100;
+                                var comisionNeta = saldo.valor * porcen;
+                                saldo.comision = comisionNeta;
+                                var update = cliente_buscado.saldo_actual - saldo.valor;
+                                var updateComision = cliente_buscado.comision_actual - comisionNeta;
+
+
+                                console.log(" saldo que se va a  debitar : saldo", update);
+                                console.log(" comision que se va a debitar : comision", updateComision);
+
+                                if (update <= 0) {
+                                    res.status(200).send({
+                                        message: 'El valor es erroneo'
+                                    });
+                                } else {
+                                    Client.findByIdAndUpdate(cliente_buscado.id, { saldo_actual: update, comision_actual: updateComision }, { new: true }, (err, cliente_debitado) => {
                                         if (err) {
-                                            res.status(500).send({ message: 'Error en la peticion' });
+                                            // console.log("i was here");
+                                            // console.log("id de cliente: " + clientId);
+                                            console.log("Saldo actual: " + cliente_buscado.saldo_actual);
+                                            console.log("saldo por parametros: " + saldo.valor);
+                                            // console.log("cliente: " + cliente_buscado.id);
+                                            res.status(500).send({
+                                                message: 'error de peticion'
+                                            });
 
                                         } else {
-                                            if (!saldoStored) {
-                                                res.status(404).send({ message: 'No se ha guardado la asignacion' });
-                                            } else {
-                                                res.status(200).send({
-                                                    message: saldoStored,
-                                                    clienteDebitado: cliente_debitado
+                                            if (!cliente_debitado) {
+                                                res.status(404).send({
+                                                    message: 'cliente no actualizado'
                                                 });
+                                            } else {
+                                                saldo.tipo = "debitado";
+                                                saldo.user_Origen = userFound._id;
+                                                console.log("usu: ", userFound._id);
+                                                saldo.save((err, saldoStored) => {
+                                                    if (err) {
+                                                        res.status(500).send({ message: 'Error en la peticion' });
+
+                                                    } else {
+                                                        if (!saldoStored) {
+                                                            res.status(404).send({ message: 'No se ha guardado la asignacion' });
+                                                        } else {
+                                                            res.status(200).send({
+                                                                message: saldoStored,
+                                                                clienteDebitado: cliente_debitado
+                                                            });
+
+                                                        }
+                                                    }
+                                                });
+
+
 
                                             }
                                         }
                                     });
 
+                                } // else de findByIdAndUpdate
+                            } // tercer else
+                        } // segundo else
+                    } // primer else
 
 
-                                }
-                            }
-                        });
+                }); // cierre findById
 
-                    } // else de findByIdAndUpdate
-                } // tercer else
-            } // segundo else
-        } // primer else
+            } // fin else encontro usuario
+
+        } // fin else if(!userFound)
+
+    }); // fin de user.findById 
 
 
-    }); // cierre findById
 
-}
+
+} // fin funcion
 
 function pasarSaldo(req, res) {
 
