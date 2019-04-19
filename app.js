@@ -13,6 +13,8 @@ var product_routes = require('./routes/product');
 var client_routes = require('./routes/client');
 var saldo_routes = require('./routes/saldo');
 var recargas_routes = require('./routes/recargas');
+var informes_routes = require('./routes/informes');
+
 // middlewares de body parser
 // urlencoded es una manera de decir q la info q recibo de los formularios la voy a poder interpretar 
 //a traves de la url, y al opcion extended:false es porque solo quiero procesar datos no imgs u otras cosas
@@ -36,6 +38,7 @@ app.use('/api/users', user_routes);
 app.use('/api/products', product_routes);
 app.use('/api/clients', client_routes);
 app.use('/api/saldo', saldo_routes);
+app.use('/api/informes', informes_routes);
 
 
 /*app.get('/probando', (req, res) => {
