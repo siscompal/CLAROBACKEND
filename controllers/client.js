@@ -38,7 +38,7 @@ function createClient(req, res) {
         client.cel = parametros.cel;
         client.porcentaje = parametros.porcentaje;
         client.efecty = parametros.efecty;
-        client.status = parametros.status;
+        client.status = true;
         client.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
         client.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
         client.user = req.user.sub;

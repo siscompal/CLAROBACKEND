@@ -12,7 +12,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
             var recarga = new Recarga();
             recarga.numero = parametros.numero;
             recarga.monto = parametros.monto;
-            // recarga.producto = paramteros.producto;
+            // recarga.producto = parametros.producto;
             recarga.producto = productoDB._id;
             recarga.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
             recarga.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
@@ -44,6 +44,9 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         if (respu.includes("Recarga exitosa")) {
 
                             if (productoDB.codigo == "1") {
+
+
+
                                 var updateSaldo = cliente_buscado.saldo_actual - parametros.monto;
                                 var updateIncentivo = productoDB.incentivo + cliente_buscado.incentivo_actual;
 

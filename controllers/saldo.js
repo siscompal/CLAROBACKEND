@@ -39,6 +39,7 @@ function asignar_saldo(req, res) {
                                 message: ' No se encontro el cliente'
                             });
                         } else {
+
                             // Buscar si el cliente a asignar existe.
                             Client.findById(saldo.cliente, (err, cliente_buscado) => {
                                 if (err) {

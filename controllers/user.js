@@ -54,7 +54,7 @@ function createUser(req, res) {
         user.cel = parametros.cel;
         user.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
         user.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
-        user.status = parametros.status;
+        user.status = true;
         user.role = parametros.role;
 
         // comprobar usuarios duplicados
@@ -109,7 +109,7 @@ function login(req, res) {
         if (err) {
             res.status(500).send({ message: 'Error al verificar el usuario' });
         } else {
-            if (existe) { // si existe el usuario lo devuelvo
+            if (existe) { // si existe el usuario lo devuelvo, existe es el usuario a loguear
                 // verifico que la contraseña es correcta
                 bcrypt.compare(pass, existe.password, (err, check) => {
                     if (check) {
@@ -133,6 +133,8 @@ function login(req, res) {
         }
     });
 }
+
+
 
 function updateUser(req, res) {
 

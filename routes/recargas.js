@@ -5,8 +5,8 @@ var RecargasController = require('../controllers/recargas');
 
 var api = express.Router();
 var md_auth = require('../middlewares/authenticated');
-
-api.post('/recargas', md_auth.ensureAuth, RecargasController.DoRecarga);
+var md_cliente = require('../middlewares/isCliente');
+api.post('/recargas', [md_auth.ensureAuth, md_cliente.isCliente], RecargasController.DoRecarga);
 api.get('/balance', md_auth.ensureAuth, RecargasController.getSaldo);
 
 

@@ -15,7 +15,7 @@ var UserSchema = Schema({
     status: { type: Boolean, required: true },
     role: {
         type: String,
-        enum: ['ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_ASESOR', 'ROLE_CARGAS', 'ROLE_CLIENTE'],
+        enum: ['ROLE_ROOT', 'ROLE_ADMIN', 'ROLE_ASESOR', 'ROLE_CARGAS'],
         required: true
     }
 

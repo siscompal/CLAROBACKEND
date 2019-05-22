@@ -2,7 +2,7 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var joi = require('joi');
+// var joi = require('joi');
 
 // cargar el framework de express directamente. se inicializa el servidor atraves de esta variable
 var app = express();
@@ -14,6 +14,7 @@ var client_routes = require('./routes/client');
 var saldo_routes = require('./routes/saldo');
 var recargas_routes = require('./routes/recargas');
 var informes_routes = require('./routes/informes');
+var login_routes = require('./routes/login');
 
 // middlewares de body parser
 // urlencoded es una manera de decir q la info q recibo de los formularios la voy a poder interpretar 
@@ -31,14 +32,18 @@ app.use((req, res, next) => {
     next();
 
 });
+
 // rutas base
 // aqui ya esta cargada la configuracion de rutas en express, lista para comenzar
 app.use('/api', recargas_routes);
+app.use('/api', login_routes);
 app.use('/api/users', user_routes);
 app.use('/api/products', product_routes);
 app.use('/api/clients', client_routes);
 app.use('/api/saldo', saldo_routes);
 app.use('/api/informes', informes_routes);
+
+
 
 
 /*app.get('/probando', (req, res) => {

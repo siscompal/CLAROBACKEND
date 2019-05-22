@@ -6,13 +6,12 @@ var SaldoSchema = Schema({
     fec_cre: { type: Date, required: Date.now() },
     obs: { type: String, required: true },
     comision: { type: Number, required: true }, //segunda bolsa
-    // comision_actual: { type: Number, required: true },
-    user_Origen: { type: Schema.ObjectId, ref: 'User' },
+    user_Origen: { type: Schema.ObjectId, ref: 'User' }, //quien asigna o debita
     client_Origen: { type: Schema.ObjectId, ref: 'Client' }, //quien asigna o debita
     cliente: { type: Schema.ObjectId, ref: 'Client' },
     tipo: { type: String, required: true },
     incentivo: { type: Number }, //tercera bolsa, lo que otorga el operador
-    // incentivo_actual: { type: Number, required: true },
+
 
 
 });

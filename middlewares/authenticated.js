@@ -14,6 +14,7 @@ exports.ensureAuth = function(req, res, next) {
     var token = req.headers.authorization.replace(/['"]+/g, '');
 
     // capturar las posibles excepciones 
+
     // decodificamos el token
     try {
         // variable donde se guardara el objeto que decodifica el token

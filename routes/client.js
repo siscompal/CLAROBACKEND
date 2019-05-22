@@ -15,5 +15,4 @@ api.get('/listado/', md_auth.ensureAuth, ClientController.getClients);
 api.put('/delete/:id', md_auth.ensureAuth, ClientController.deleteClient);
 
 
-
 module.exports = api;

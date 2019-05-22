@@ -9,7 +9,7 @@ var RecargaSchema = Schema({
     respuesta: { type: String, required: true },
     fec_cre: { type: Date, default: Date.now() },
     fec_upd: { type: Date, default: Date.now() },
-    client: { type: Schema.ObjectId, ref: 'Client' }
+    client: { type: Schema.ObjectId, ref: 'Client' } // cliente que hace la recargar
 
 });
 
