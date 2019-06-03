@@ -24,9 +24,11 @@ function createClient(req, res) {
 
     var parametros = req.body;
 
+    console.log("usuario del front" + parametros);
+
     var client = new Client();
 
-    if (parametros.name && parametros.lastname && parametros.iden && parametros.email && parametros.username && parametros.password && parametros.city && parametros.dir && parametros.cel && parametros.porcentaje && parametros.status && parametros.role) {
+    if (parametros.name && parametros.lastname && parametros.iden && parametros.email && parametros.username && parametros.password && parametros.city && parametros.dir && parametros.cel && parametros.porcentaje && parametros.role) {
         client.name = parametros.name;
         client.lastname = parametros.lastname;
         client.iden = parametros.iden;

@@ -24,14 +24,14 @@ function createProduct(req, res) {
 
     var parametros = req.body;
 
+    console.log(parametros);
 
-
-    if (parametros.name && parametros.precio && parametros.codigo && parametros.status && parametros.descripcion && parametros.tipo) {
+    if (parametros.name && parametros.precio && parametros.codigo && parametros.descripcion && parametros.tipo && parametros.incentivo) {
         // setteo las variables
         product.name = parametros.name;
         product.precio = parametros.precio;
         product.codigo = parametros.codigo;
-        product.status = parametros.status;
+        product.status = true
         product.tipo = parametros.tipo;
         product.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
         product.fec_upd = moment().format('YYYY MM DD HH:mm:ss');

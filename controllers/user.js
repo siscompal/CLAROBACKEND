@@ -44,7 +44,7 @@ function createUser(req, res) {
 
     //Asignar valores al objeto usuario
 
-    if (parametros.iden && parametros.lastname && parametros.name && parametros.username && parametros.password && parametros.email && parametros.cel && parametros.status && parametros.role) {
+    if (parametros.iden && parametros.lastname && parametros.name && parametros.username && parametros.role) {
         user.name = parametros.name;
         user.lastname = parametros.lastname;
         user.iden = parametros.iden;
