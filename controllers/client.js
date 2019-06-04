@@ -1,14 +1,14 @@
 'use strict'
 // MODULOS
 //libreria bcrypt(para cifrar contraseñas)
-var bcrypt = require('bcrypt-nodejs');
-var moment = require('moment');
+const bcrypt = require('bcrypt-nodejs');
+const moment = require('moment');
 
 //MODELOS
-var Client = require('../models/client');
+const Client = require('../models/client');
 
 // servicios jwt 
-var jwt = require('../services/jwt');
+const jwt = require('../services/jwt');
 //ACCIONES O METODOS
 
 function pruebas(req, res) {
@@ -23,8 +23,6 @@ function pruebas(req, res) {
 function createClient(req, res) {
 
     var parametros = req.body;
-
-    console.log("usuario del front" + parametros);
 
     var client = new Client();
 

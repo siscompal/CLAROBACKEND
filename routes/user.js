@@ -1,12 +1,12 @@
 'use strict'
 
-var express = require('express');
-var UserController = require('../controllers/user');
+const express = require('express');
+const UserController = require('../controllers/user');
 
-var api = express.Router();
+const api = express.Router();
 
-var md_auth = require('../middlewares/authenticated'); // Cargo el middleware
-var md_admin = require('../middlewares/isAdmin');
+const md_auth = require('../middlewares/authenticated'); // Cargo el middleware
+const md_admin = require('../middlewares/isAdmin');
 
 // para utilizar un middleware se lo paso como segundo parametro a la ruta que quiero proteger con autenticacion
 api.get('/pruebas', md_auth.ensureAuth, UserController.pruebas);

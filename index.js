@@ -1,24 +1,28 @@
-// Aqui tenemos la conexion al servidor, y la conexion a la base de datos.
 'use strict'
 
+const mongoose = require('mongoose');
+const app = require('./app');
+require('dotenv').config();
 
-var app = require('./app');
+const port = process.env.PORT;
+//Url for conection with MongoDB Atlas
 
-// Cargamos el modulo de mongoose en una variable, que nos va a servir para trabajar con la db dentro de nuestra APIrest
-var mongoose = require('mongoose');
 
-var port = process.env.PORT || 3789;
+const url = 'mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASS+'@cluster0-nrqhe.mongodb.net/test?retryWrites=true&w=majority'
+const options = {
+    useNewUrlParser: true,
+    dbName: "claro"
+  };
 
 mongoose.Promise = global.Promise;
-//conexion a la db
-mongoose.connect('mongodb://localhost:27017/claro', { useNewUrlParser: true })
-    .then(() => {
-
-        console.log('Conexion exitosa a la base de datos');
-
-        // crear el servidor web y lanzarlo
-        app.listen(port, () => {
-            console.log('El servidor local con node y express esta corriendo');
+mongoose.connect(url, options).then(
+    () => {
+        console.log("Connection to the database successfully established");
+        app.listen(port, ()=> {
+            console.log("Server running correctly in the url: localhost:"+port);
         });
-    })
-    .catch(err => console.log(err));
+      },
+      err => {
+        console.log("Error connecting Database instance due to: ", err);
+      }
+     );

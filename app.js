@@ -1,20 +1,20 @@
 'use strict'
 
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
 // var joi = require('joi');
 
 // cargar el framework de express directamente. se inicializa el servidor atraves de esta variable
-var app = express();
+const app = express();
 
 // cargar rutas (variables de configuracion de rutas)
-var user_routes = require('./routes/user');
-var product_routes = require('./routes/product');
-var client_routes = require('./routes/client');
-var saldo_routes = require('./routes/saldo');
-var recargas_routes = require('./routes/recargas');
-var informes_routes = require('./routes/informes');
-var login_routes = require('./routes/login');
+const user_routes = require('./routes/user');
+const product_routes = require('./routes/product');
+const client_routes = require('./routes/client');
+const saldo_routes = require('./routes/saldo');
+const recargas_routes = require('./routes/recargas');
+const informes_routes = require('./routes/informes');
+const login_routes = require('./routes/login');
 
 // middlewares de body parser
 // urlencoded es una manera de decir q la info q recibo de los formularios la voy a poder interpretar 
@@ -43,12 +43,5 @@ app.use('/api/clients', client_routes);
 app.use('/api/saldo', saldo_routes);
 app.use('/api/informes', informes_routes);
 
-
-
-
-/*app.get('/probando', (req, res) => {
-    res.status(200).send({ message: 'Este es el metodo probando' });
-});
-*/
 
 module.exports = app;

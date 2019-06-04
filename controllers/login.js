@@ -1,15 +1,15 @@
 'use strict'
 // MODULOS
 
-var bcrypt = require('bcrypt-nodejs');
-var moment = require('moment');
+const bcrypt = require('bcrypt-nodejs');
+const moment = require('moment');
 
 //MODELOS
-var User = require('../models/user');
-var Client = require('../models/client');
+const User = require('../models/user');
+const Client = require('../models/client');
 
 // servicios jwt 
-var jwt = require('../services/jwt');
+const jwt = require('../services/jwt');
 
 function login(req, res) {
     // recibimos los parametros que me llegan en la peticion 
@@ -19,7 +19,6 @@ function login(req, res) {
     var username = parametros.username;
     var pass = parametros.password;
     //var role = parametros.role;
-
     // 1. comprobar que el usuario existe, buscando por la variable username
 
     User.findOne({ username: username.toLowerCase() }, (err, existe) => {
@@ -30,6 +29,7 @@ function login(req, res) {
                 // verifico que la contraseña es correcta
                 bcrypt.compare(pass, existe.password, (err, check) => {
                     if (check) {
+                        
                         //
                         if (parametros.gettoken) {
                             // devolver el token jwt
@@ -55,6 +55,7 @@ function login(req, res) {
                     } else {
                         if (existe) { // si existe el usuario lo devuelvo
                             // verifico que la contraseña es correcta
+
                             bcrypt.compare(pass, existe.password, (err, check) => {
                                 if (check) {
                                     if (parametros.gettoken) {

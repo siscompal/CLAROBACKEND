@@ -1,10 +1,10 @@
 'use strict'
 
-var express = require('express');
-var SaldoController = require('../controllers/saldo');
+const express = require('express');
+const SaldoController = require('../controllers/saldo');
 
-var api = express.Router();
-var md_auth = require('../middlewares/authenticated');
+const api = express.Router();
+const md_auth = require('../middlewares/authenticated');
 
 // api.get('/pruebas-saldo', md_auth.ensureAuth, SaldoController.pruebas);
 api.put('/asignar/:id', md_auth.ensureAuth, SaldoController.asignar_saldo);
