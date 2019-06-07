@@ -7,18 +7,6 @@ var moment = require('moment');
 var User = require('../models/user');
 var Product = require('../models/product');
 
-// servicios jwt 
-// var jwt = require('../services/jwt');
-
-//ACCIONES O METODOS
-function pruebas(req, res) {
-    res.status(200).send({
-        message: 'Probando el controlador de producto',
-        user: req.user
-    });
-
-}
-
 function createProduct(req, res) {
     var product = new Product();
 
@@ -205,7 +193,6 @@ function deleteProduct(req, res) {
 }
 
 module.exports = {
-    pruebas,
     createProduct,
     getProducts,
     getProduct,

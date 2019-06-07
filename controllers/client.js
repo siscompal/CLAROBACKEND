@@ -9,16 +9,6 @@ const Client = require('../models/client');
 
 // servicios jwt 
 const jwt = require('../services/jwt');
-//ACCIONES O METODOS
-
-function pruebas(req, res) {
-    res.status(200).send({
-        message: 'Probando el controlador de cliente',
-        usuarioLoggueado: req.user
-    });
-
-}
-
 
 function createClient(req, res) {
 
@@ -192,7 +182,6 @@ function deleteClient(req, res) {
 
 
 module.exports = {
-    pruebas,
     createClient,
     login,
     updateClient,

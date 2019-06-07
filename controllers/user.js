@@ -10,14 +10,7 @@ var User = require('../models/user');
 
 // servicios jwt 
 var jwt = require('../services/jwt');
-//ACCIONES O METODOS
-function pruebas(req, res) {
-    res.status(200).send({
-        message: 'Probando el controlador de usuarios y la accion pruebas',
-        user: req.user
-    });
 
-}
 // Registro de usuarios
 function createUser(req, res) {
     // recoger los parametros(body)q llegan por la peticion (q ya ha sido convertido en un objeto json)
@@ -248,7 +241,6 @@ function deleteUser(req, res) {
 
 
 module.exports = {
-    pruebas,
     createUser,
     login,
     updateUser,
