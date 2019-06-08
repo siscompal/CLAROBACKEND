@@ -12,7 +12,6 @@ const product_routes = require('./routes/product');
 const client_routes = require('./routes/client');
 const saldo_routes = require('./routes/saldo');
 const recargas_routes = require('./routes/recargas');
-const informes_routes = require('./routes/informes');
 const login_routes = require('./routes/login');
 
 
@@ -38,7 +37,7 @@ app.use('/api', user_routes);
 app.use('/api', product_routes);
 app.use('/api', client_routes);
 app.use('/api', saldo_routes);
-app.use('/api', informes_routes);
+
 
 
 module.exports = app;

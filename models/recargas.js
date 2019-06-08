@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var RecargaSchema = Schema({
     numero: { type: String, required: true },
-    monto: { type: String },
+    monto: { type: String, require: true },
     // producto: { type: String, required: true },
     producto: { type: Schema.ObjectId, ref: 'Product' },
     respuesta: { type: String, required: true },

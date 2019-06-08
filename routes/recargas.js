@@ -6,11 +6,13 @@ const RecargasController = require('../controllers/recargas');
 const api = express.Router();
 const md_auth = require('../middlewares/authenticated');
 const md_cliente = require('../middlewares/isCliente');
-const md_mayo = require('../middlewares/isMayorista');
-const md_distri = require('../middlewares/isDistribuidor');
+const md_global = require('../middlewares/isGlobal');
+
 
 api.post('/recargas', [md_auth.ensureAuth, md_cliente.isCliente], RecargasController.DoRecarga);
-api.get('/balance', [md_auth.ensureAuth, md_cliente.isCliente, md_distri.isDistribuidor, md_mayo.isMayorista], RecargasController.getSaldo);
+api.get('/listarRecargas', [md_auth.ensureAuth, md_cliente.isCliente], RecargasController.listarRecargas);
+api.get('/allRecargas', [md_auth.ensureAuth, md_global.isGlobal], RecargasController.allRecargas);
+
 
 
 module.exports = api;

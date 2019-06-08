@@ -75,10 +75,9 @@ function getProducts(req, res) {
 
 // obtener un solo produto (admin)
 function getProduct(req, res) {
-
     var productId = req.params.id; // ojo aqui es params
 
-    Product.findById(productId).populate({ path: 'user' }).exec((err, product) => {
+    Product.findById(productId).exec((err, product) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
         } else {

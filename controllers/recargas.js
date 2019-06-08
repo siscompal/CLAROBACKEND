@@ -1,12 +1,10 @@
 'use strict'
-// modulos
-var request = require('request');
-
 
 // modelos
 var Product = require('../models/product');
 var Client = require('../models/client');
 var peticion = require('../services/peticion');
+var Recargas = require('../models/recargas');
 
 function DoRecarga(req, res) {
 
@@ -52,43 +50,66 @@ function DoRecarga(req, res) {
 } // fin de doRecarga
 
 
-function getSaldo(req, res) {
-    console.log("Show saldo");
-    var options = {
-        url: 'http://70.38.107.45:8090/misald/5781/0177b0974b925',
-        method: 'GET',
-    }
 
-    request(options, function(error, response, body) {
-        console.log("llega a request", body);
-        if (!error && response.statusCode == 200) {
 
-            console.log(body);
-            var nojson = JSON.parse(body);
-            console.log("este es el nojson " + nojson.respuesta);
-            var respu = nojson.respuesta;
-            res.status(200).send({
-                respuesta: respu
+// cliente que quiere saber sus recargas 
+function listarRecargas(req, res) {
+
+    var cliente = req.user.sub;
+
+    //  Recargas.find({ client: cliente }).populate('client', 'name lastname username').exec((err, infoFound) => {
+    Recargas.find({ client: cliente }).exec((err, infoFound) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Error al buscar recarga',
             });
 
         } else {
-            var nojson = JSON.parse(body);
-            var respu = nojson.respuesta;
-            console.log("error", respu);
-            res.status(400).send({
-                respuesta: respu
-            })
+            if (!infoFound) {
+                return res.status(404).send({
+                    message: 'No se ha encontrado informacion',
+                });
+            } else {
+                return res.status(200).send({
+                    InfoEncontrada: infoFound
+
+                });
+            }
         }
 
-    })
+    });
+
+}
+
+// (Admin)
+function allRecargas(req, res) {
+    Recargas.find({}).populate('client', 'name').exec((err, infoFound) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Error al buscar recarga',
+            });
+
+        } else {
+            if (!infoFound) {
+                return res.status(404).send({
+                    message: 'No se ha encontrado informacion',
+                });
+            } else {
+                return res.status(200).send({
+                    InfoEncontrada: infoFound
+                });
+            }
+        }
+
+    });
 
 }
 
 
 
 
-
 module.exports = {
     DoRecarga,
-    getSaldo
+    listarRecargas,
+    allRecargas
 };

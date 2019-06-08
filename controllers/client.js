@@ -6,14 +6,13 @@ const moment = require('moment');
 
 //MODELOS
 const Client = require('../models/client');
+const User = require('../models/user');
 
 // servicios jwt 
 const jwt = require('../services/jwt');
 
 function createClient(req, res) {
-
     var parametros = req.body;
-
     var client = new Client();
 
     if (parametros.name && parametros.lastname && parametros.iden && parametros.email && parametros.username && parametros.password && parametros.city && parametros.dir && parametros.cel && parametros.porcentaje && parametros.role) {
@@ -77,9 +76,7 @@ function createClient(req, res) {
 }
 
 function register(req, res) {
-
     var parametros = req.body;
-
     var client = new Client();
 
     if (parametros.name && parametros.lastname && parametros.iden && parametros.email && parametros.username && parametros.password) {
@@ -92,7 +89,7 @@ function register(req, res) {
         client.city = parametros.city;
         client.dir = parametros.dir;
         client.cel = parametros.cel;
-        client.porcentaje = parametros.porcentaje;
+        client.porcentaje = 5;
         client.efecty = parametros.efecty;
         client.status = true;
         client.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
@@ -102,7 +99,6 @@ function register(req, res) {
         client.saldo_actual = 0;
         client.comision_actual = 0;
         client.incentivo_actual = 0;
-
 
         // Buscar clientes repetidos 
         Client.findOne({ username: parametros.username.toLowerCase() }, (err, clienteDB) => {
@@ -143,50 +139,9 @@ function register(req, res) {
 }
 
 
-
-
-function login(req, res) {
-    var parametros = req.body;
-    // variable que guarde el campo que necesito para verificar
-    var username = parametros.username;
-    var pass = parametros.password;
-
-    Client.findOne({ username: username }, (err, existe) => {
-        if (err) {
-            res.status(500).send({ message: 'Error al verificar el usuario' });
-        } else {
-            if (existe) { // si existe el usuario lo devuelvo
-                // verifico que la contraseña es correcta
-                bcrypt.compare(pass, existe.password, (err, check) => {
-                    if (check) {
-                        if (parametros.gettoken) {
-                            // devolver el token jwt
-                            res.status(200).send({
-                                token: jwt.createToken(existe)
-                            });
-                        } else {
-                            res.status(200).send({ usuarioLoqueado: existe });
-                        }
-
-                    } else {
-                        res.status(404).send({ message: 'Usuario y/o contraseña incorrectos' });
-                    }
-                });
-            } else {
-                res.status(404).send({ message: 'El usuario no  existe' });
-            }
-        }
-    });
-}
-
 function updateClient(req, res) {
-
     var clientId = req.params.id;
     var update = req.body;
-
-    /*if (clientId != req.client.sub) {
-        return res.status(500).send({ message: 'No tienes permitido actualizar cliente' });
-    }*/
 
     Client.findByIdAndUpdate(clientId, update, { new: true }, (err, clientUpdated) => {
         if (err) {
@@ -210,8 +165,47 @@ function updateClient(req, res) {
 
 }
 
+// Obtener todos los clientes del sistema 
 function getClients(req, res) {
-    Client.find({ status: true }).populate({ path: 'user' }).exec((err, clientes) => {
+    Client.find({ status: true }).populate('client', 'name lastname').exec((err, clientes) => {
+        // .populate('el_usuario', 'nombre apellidos') para solo devolver los campos que quiero.
+        if (err) {
+            res.status(500).send({ message: 'Error en la peticion' });
+        } else {
+            if (!clientes) {
+                res.status(404).send({ message: 'No hay clientes' });
+            } else {
+                res.status(200).send({ clientes });
+            }
+        }
+    });
+
+}
+
+
+function getClient(req, res) {
+    var clientId = req.params.id;
+
+    Client.findById(clientId).exec((err, cliente) => {
+        // .populate('el_usuario', 'nombre apellidos') para solo devolver los campos que quiero.
+        if (err) {
+            res.status(500).send({ message: 'Error en la peticion' });
+        } else {
+            if (!cliente) {
+                res.status(404).send({ message: 'No hay clientes' });
+            } else {
+                res.status(200).send({ cliente });
+            }
+        }
+    });
+
+}
+
+// clientes que quieran ver su arbol de clientes
+function getMyClients(req, res) {
+    var cliente = req.user.sub;
+
+    Client.find({ user: cliente }).exec((err, clientes) => {
         // .populate('usuario', 'nombre apellidos') para solo devolver los campos que quiero.
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
@@ -252,10 +246,12 @@ function deleteClient(req, res) {
 
 
 module.exports = {
-    login,
+    register,
     createClient,
     updateClient,
     getClients,
-    deleteClient,
-    register
+    getClient,
+    getMyClients,
+    deleteClient
+
 }

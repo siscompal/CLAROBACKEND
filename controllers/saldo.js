@@ -1,13 +1,13 @@
 'use strict'
-//     console.log();
-//hora
+// modulos
+var request = require('request');
 var moment = require('moment');
 
 //modelos
 var Client = require('../models/client');
 var Saldo = require('../models/saldo');
 var User = require('../models/user');
-//fin modelos
+
 
 function asignar_saldo(req, res) {
     var parametros = req.body;
@@ -18,7 +18,6 @@ function asignar_saldo(req, res) {
     saldo.obs = parametros.obs;
     saldo.cliente = clientId;
     saldo.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
-
 
     // buscar usuario que asigna
     User.findById(usu_cli, (err, userFound) => {
@@ -564,9 +563,43 @@ function pasarSaldo(req, res) {
 
 }
 
+// Solo admin
+function getSaldo(req, res) {
+    console.log("Show saldo");
+    var options = {
+        url: 'http://70.38.107.45:8090/misald/5781/0177b0974b925',
+        method: 'GET',
+    }
+
+    request(options, function(error, response, body) {
+        console.log("llega a request", body);
+        if (!error && response.statusCode == 200) {
+
+            console.log(body);
+            var nojson = JSON.parse(body);
+            console.log("este es el nojson " + nojson.respuesta);
+            var respu = nojson.respuesta;
+            res.status(200).send({
+                respuesta: respu
+            });
+
+        } else {
+            var nojson = JSON.parse(body);
+            var respu = nojson.respuesta;
+            console.log("error", respu);
+            res.status(400).send({
+                respuesta: respu
+            })
+        }
+
+    })
+
+}
+
 
 module.exports = {
     asignar_saldo,
     debitar_saldo,
-    pasarSaldo
+    pasarSaldo,
+    getSaldo
 }

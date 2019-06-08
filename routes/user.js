@@ -10,9 +10,8 @@ const md_admin = require('../middlewares/isAdmin');
 
 api.post('/users', [md_auth.ensureAuth, md_admin.isAdmin], UserController.createUser);
 api.put('/users/:id', [md_auth.ensureAuth, md_admin.isAdmin], UserController.updateUser);
-api.get('/asesores', [md_auth.ensureAuth, md_admin.isAdmin], UserController.getAsesores);
-api.get('/cargas', [md_auth.ensureAuth, md_admin.isAdmin], UserController.getCargas);
 api.get('/users', [md_auth.ensureAuth, md_admin.isAdmin], UserController.getUsers);
+api.get('/user/:id', [md_auth.ensureAuth, md_admin.isAdmin], UserController.getUser);
 api.delete('/users/:id', [md_auth.ensureAuth, md_admin.isAdmin], UserController.deleteUser);
 
 
