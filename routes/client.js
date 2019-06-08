@@ -12,10 +12,10 @@ const md_mayo = require('../middlewares/isMayorista');
 const md_distri = require('../middlewares/isDistribuidor');
 const md_global = require('../middlewares/isGlobal');
 
-
-api.post('/clients', [md_auth.ensureAuth, md_admin.isAdmin, md_global.isGlobal], ClientController.createClient);
-api.put('/clients/:id', [md_auth.ensureAuth, md_admin.isAdmin, md_global.isGlobal], ClientController.updateClient);
-api.get('/clients/', [md_auth.ensureAuth, md_admin.isAdmin, md_global.isGlobal], ClientController.getClients);
+api.post('/register', ClientController.register);
+api.post('/clients', [md_auth.ensureAuth, md_global.isGlobal], ClientController.createClient);
+api.put('/clients/:id', [md_auth.ensureAuth, md_global.isGlobal], ClientController.updateClient);
+api.get('/clients/', [md_auth.ensureAuth, md_global.isGlobal], ClientController.getClients);
 api.delete('/clients/:id', [md_auth.ensureAuth, md_admin.isAdmin, md_mayo.isMayorista, md_distri.isDistribuidor], ClientController.deleteClient); // Cambia status 
 
 

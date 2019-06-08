@@ -13,11 +13,12 @@ function asignar_saldo(req, res) {
     var parametros = req.body;
     var clientId = req.params.id;
     var saldo = new Saldo();
+    var usu_cli = req.user.sub;
     saldo.valor = parametros.valor;
     saldo.obs = parametros.obs;
     saldo.cliente = clientId;
     saldo.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
-    var usu_cli = req.user.sub;
+
 
     // buscar usuario que asigna
     User.findById(usu_cli, (err, userFound) => {
@@ -136,7 +137,7 @@ function asignar_saldo(req, res) {
                     } else {
                         if (!cliente_buscado) {
                             res.status(404).send({
-                                message: 'el cliente no se encontro'
+                                message: 'No se encontro el cliente'
                             });
 
                         } else { // si cliente a asignar es encontrado

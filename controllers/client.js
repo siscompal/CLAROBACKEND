@@ -38,7 +38,7 @@ function createClient(req, res) {
         client.incentivo_actual = 0;
 
 
-        // Buscamos clientes repetidos 
+        // Buscar clientes repetidos 
         Client.findOne({ username: parametros.username.toLowerCase() }, (err, clienteDB) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar el cliente' });
@@ -75,6 +75,75 @@ function createClient(req, res) {
     }
 
 }
+
+function register(req, res) {
+
+    var parametros = req.body;
+
+    var client = new Client();
+
+    if (parametros.name && parametros.lastname && parametros.iden && parametros.email && parametros.username && parametros.password) {
+        client.name = parametros.name;
+        client.lastname = parametros.lastname;
+        client.iden = parametros.iden;
+        client.email = parametros.email;
+        client.username = parametros.username;
+        client.password = parametros.password;
+        client.city = parametros.city;
+        client.dir = parametros.dir;
+        client.cel = parametros.cel;
+        client.porcentaje = parametros.porcentaje;
+        client.efecty = parametros.efecty;
+        client.status = true;
+        client.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
+        client.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
+        client.user = null;
+        client.role = "CLI_CLIENTE";
+        client.saldo_actual = 0;
+        client.comision_actual = 0;
+        client.incentivo_actual = 0;
+
+
+        // Buscar clientes repetidos 
+        Client.findOne({ username: parametros.username.toLowerCase() }, (err, clienteDB) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el cliente' });
+            } else {
+                if (!clienteDB) { // si no existe cliente
+                    // Cifrar contraseña
+                    bcrypt.hash(parametros.password, null, null, function(err, hash) {
+                        client.password = hash;
+
+                        //Guardo cliente en db
+                        client.save((err, clientStored) => {
+                            if (err) {
+                                res.status(500).send({ message: 'Error al guardar cliente' });
+                                console.log(String(err));
+                                console.log(parametros.iden, parametros.name, parametros.username);
+
+                            } else {
+                                if (!clientStored) {
+                                    res.status(404).send({ message: 'No se ha registrado el cliente' });
+                                } else {
+                                    res.status(200).send({ clienteGuardado: clientStored });
+                                }
+                            }
+                        });
+                    });
+                } else {
+                    res.status(200).send({ message: 'Cliente existente' });
+                }
+            }
+        });
+
+    } else {
+        res.status(200).send({ message: 'Introduce los datos correctamente' });
+    }
+
+}
+
+
+
 
 function login(req, res) {
     var parametros = req.body;
@@ -114,6 +183,7 @@ function updateClient(req, res) {
 
     var clientId = req.params.id;
     var update = req.body;
+
     /*if (clientId != req.client.sub) {
         return res.status(500).send({ message: 'No tienes permitido actualizar cliente' });
     }*/
@@ -182,9 +252,10 @@ function deleteClient(req, res) {
 
 
 module.exports = {
-    createClient,
     login,
+    createClient,
     updateClient,
     getClients,
-    deleteClient
+    deleteClient,
+    register
 }
