@@ -186,10 +186,10 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
             recarga.client = req.user.sub;
 
             var options = {
-                url: 'http://70.38.107.45:8090/recar',
+                url: process.env.URL,
                 body: JSON.stringify({
-                    'key': '0177b0974b925',
-                    'id': '5781',
+                    'key': process.env.KEY,
+                    'id': process.env.ID,
                     'monto': parametros.monto,
                     'celular': parametros.numero,
                     'producto': productoDB.codigo
@@ -343,10 +343,10 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
             recarga.client = req.user.sub;
 
             var options = {
-                url: 'http://70.38.107.45:8090/recar',
+                url: process.env.URL,
                 body: JSON.stringify({
-                    'key': '0177b0974b925',
-                    'id': '5781',
+                    'key': process.env.KEY,
+                    'id': process.env.ID,
                     'monto': parametros.monto,
                     'celular': parametros.numero,
                     'producto': productoDB.codigo
