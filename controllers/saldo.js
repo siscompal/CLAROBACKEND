@@ -470,7 +470,7 @@ function pasarSaldo(req, res) {
                     message: 'No se ha encontrar el cliente',
                 });
             } else {
-
+                // de bolsa comision para bolsa saldo
                 if (bolsa_origen == "comision") {
                     var updateComision = cliente_buscado.comision_actual - cliente_buscado.comision_actual;
                     var updateSaldo = cliente_buscado.saldo_actual + cliente_buscado.comision_actual;
@@ -499,6 +499,7 @@ function pasarSaldo(req, res) {
                             }
                         }
                     });
+                    // de bolsa incentivo a saldo
                 } else if (bolsa_origen == "incentivo") {
                     if (bolsa_destino == "saldo") {
 
@@ -526,7 +527,7 @@ function pasarSaldo(req, res) {
                         });
 
 
-                        // si bolsa destino es comision
+                        // de bolsa incentivo a bolsa comision (si bolsa destino es comision)
                     } else {
                         var updateIncentivo = cliente_buscado.incentivo_actual - cliente_buscado.incentivo_actual;
                         var updateComision = cliente_buscado.comision_actual + cliente_buscado.incentivo_actual;
@@ -596,10 +597,33 @@ function getSaldo(req, res) {
 
 }
 
+function reporteRepartos(req, res) {
+    var clientID = req.user.sub;
+    Saldo.find({ cliente: clientID }).exec((err, infoFound) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Error al buscar reportes de saldo',
+            });
+
+        }
+        if (!infoFound) {
+            return res.status(404).send({
+                message: 'No se ha encontrado informacion',
+            });
+        } else {
+            return res.status(200).send({
+                InfoEncontrada: infoFound
+            });
+        }
+    });
+
+}
+
 
 module.exports = {
     asignar_saldo,
     debitar_saldo,
     pasarSaldo,
-    getSaldo
+    getSaldo,
+    reporteRepartos
 }

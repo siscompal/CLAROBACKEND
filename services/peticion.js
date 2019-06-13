@@ -39,6 +39,8 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
                         // var respu = nojson.respuesta;
+
+                        // comentar cuando vaya a produccion
                         var respu = "Recarga exitosa";
 
                         if (respu.includes("Recarga exitosa")) {
@@ -175,7 +177,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
             var recarga = new Recarga();
             recarga.numero = parametros.numero;
             recarga.monto = parametros.monto;
-            // recarga.producto = paramteros.producto;
+            // recarga.producto = parametros.producto;
             recarga.producto = productoDB._id;
             recarga.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
             recarga.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
@@ -201,7 +203,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         console.log(body);
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
-                        var respu = nojson.respuesta;
+                        // var respu = nojson.respuesta;
                         var respu = "Recarga exitosa";
 
                         if (respu.includes("Recarga exitosa")) {

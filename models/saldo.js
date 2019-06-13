@@ -11,9 +11,6 @@ var SaldoSchema = Schema({
     cliente: { type: Schema.ObjectId, ref: 'Client' },
     tipo: { type: String, required: true },
     incentivo: { type: Number }, //tercera bolsa, lo que otorga el operador
-
-
-
 });
 
 module.exports = mongoose.model('Saldo', SaldoSchema);
