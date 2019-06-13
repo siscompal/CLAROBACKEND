@@ -1,7 +1,8 @@
-var request = require('request');
-var Recarga = require('../models/recargas');
-var moment = require('moment');
-var Client = require('../models/client');
+const request = require('request');
+const Recarga = require('../models/recargas');
+const moment = require('moment');
+const Client = require('../models/client');
+require('dotenv').config();
 
 function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
 
@@ -19,10 +20,10 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
             recarga.client = req.user.sub;
 
             var options = {
-                url: 'http://70.38.107.45:8090/recar',
+                url: process.env.URL,
                 body: JSON.stringify({
-                    'key': '0177b0974b925',
-                    'id': '5781',
+                    'key': process.env.KEY,
+                    'id': process.env.ID,
                     'monto': parametros.monto,
                     'celular': parametros.numero,
                     'producto': productoDB.codigo
@@ -30,6 +31,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             }
+            console.log(options);
 
             request(options, function(error, response, body) {
                     console.log("Entró a request", body);

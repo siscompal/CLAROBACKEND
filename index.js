@@ -15,6 +15,7 @@ const options = {
 };
 
 mongoose.Promise = global.Promise;
+mongoose.set('useFindAndModify', false);
 mongoose.connect(url, options).then(
     () => {
         console.log("Connection to the database successfully established");

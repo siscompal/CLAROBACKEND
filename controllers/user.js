@@ -75,10 +75,6 @@ function updateUser(req, res) {
     //recibimos los datos del body
     var update = req.body;
 
-    // comprobamos si el id del usuario logueado es diferente al id que llega por la URL
-    if (userId != req.user.sub) {
-        return res.status(500).send({ message: 'No tienes permitido actualizar usuario' });
-    }
 
     // new:true me devuelve el objeto que ha sido actualizado
     User.findByIdAndUpdate(userId, update, { new: true }, (err, userUpdated) => {
