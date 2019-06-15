@@ -568,7 +568,7 @@ function pasarSaldo(req, res) {
 function getSaldo(req, res) {
     console.log("Show saldo");
     var options = {
-        url: 'http://70.38.107.45:8090/misald/5781/0177b0974b925',
+        url: process.env.SALDO + '/' + process.env.KEY,
         method: 'GET',
     }
 
@@ -579,7 +579,7 @@ function getSaldo(req, res) {
             console.log(body);
             var nojson = JSON.parse(body);
             console.log("este es el nojson " + nojson.respuesta);
-            var respu = nojson.respuesta;
+            var respu = nojson.saldo;
             res.status(200).send({
                 respuesta: respu
             });
