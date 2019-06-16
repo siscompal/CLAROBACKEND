@@ -598,8 +598,9 @@ function getSaldo(req, res) {
 }
 
 //Usuarios admin
-function reporteRepartos(req, res) {
-    Saldo.find({}).exec((err, infoFound) => {
+function allRepartos(req, res) {
+    Saldo.find({}).populate({ path: 'cliente', select: 'name' }).
+    populate({ path: 'user_Origen', select: 'name' }).populate({ path: 'client_Origen', select: 'name' }).exec((err, infoFound) => {
         if (err) {
             return res.status(500).send({
                 message: 'Error al buscar reportes de saldo',
@@ -641,6 +642,114 @@ function misRepartos(req, res) {
 
 }
 
+function pruebaSaldo(req, res) {
+
+    var parametros = req.body;
+    var clientId = req.params.id;
+    var saldo = new Saldo();
+
+    saldo.valor = req.body.valor;
+    saldo.obs = parametros.obs;
+    saldo.cliente = clientId;
+    saldo.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
+    saldo.user_Origen = req.user.sub;
+
+    console.log("parametros del body " + saldo.valor);
+    // Buscar  cliente a debitar
+    Client.findById(saldo.cliente, (err, cliente_buscado) => {
+        if (err) {
+            console.log(clientId);
+
+            res.status(500).send({
+                message: 'Error en la peticion buscando el cliente'
+            });
+        } else {
+            if (!cliente_buscado) {
+                res.status(404).send({
+                    message: 'el cliente no se encontro'
+                });
+
+            } else { // si cliente a debitar es encontrado
+
+                if (saldo.valor >= cliente_buscado.saldo_actual || saldo.valor <= 0) {
+                    res.status(200).send({
+                        message: 'Valor no permitido'
+                    });
+                } else {
+                    //cuando todo esta ok
+                    console.log("---------// este es ID ", cliente_buscado._id, "//-------");
+                    console.log("valor que viene de postman", saldo.valor);
+                    console.log("valor que viene de cliente", cliente_buscado.saldo_actual);
+                    // --------------------------------OPERACIONES -------------------------------------------------//
+
+                    var porcen = cliente_buscado.porcentaje / 100;
+                    var comisionNeta = saldo.valor * porcen;
+                    saldo.comision = comisionNeta;
+                    var update = cliente_buscado.saldo_actual - saldo.valor;
+                    var updateComision = cliente_buscado.comision_actual - comisionNeta;
+
+
+                    console.log(" saldo que se va a  debitar : saldo", update);
+                    console.log(" comision que se va a debitar : comision", updateComision);
+
+                    if (update <= 0) {
+                        res.status(200).send({
+                            message: 'El valor es erroneo'
+                        });
+                    } else {
+                        Client.findByIdAndUpdate(cliente_buscado.id, { saldo_actual: update, comision_actual: updateComision }, { new: true }, (err, cliente_debitado) => {
+                            if (err) {
+                                // console.log("i was here");
+                                // console.log("id de cliente: " + clientId);
+                                console.log("Saldo actual: " + cliente_buscado.saldo_actual);
+                                console.log("saldo por parametros: " + saldo.valor);
+                                // console.log("cliente: " + cliente_buscado.id);
+                                res.status(500).send({
+                                    message: 'error de peticion'
+                                });
+
+                            } else {
+                                if (!cliente_debitado) {
+                                    res.status(404).send({
+                                        message: 'cliente no actualizado'
+                                    });
+                                } else {
+                                    saldo.tipo = "debitado";
+                                    saldo.save((err, saldoStored) => {
+                                        if (err) {
+                                            res.status(500).send({ message: 'Error en la peticion' });
+
+                                        } else {
+                                            if (!saldoStored) {
+                                                res.status(404).send({ message: 'No se ha guardado la asignacion' });
+                                            } else {
+                                                res.status(200).send({
+                                                    message: saldoStored,
+                                                    //clienteDebitado: cliente_debitado
+                                                });
+
+                                            }
+                                        }
+                                    });
+
+
+
+                                }
+                            }
+                        });
+
+                    } // else de findByIdAndUpdate
+                } // tercer else
+            } // segundo else
+        } // primer else
+
+
+    }); // cierre findById
+
+
+
+
+}
 
 
 
@@ -649,6 +758,7 @@ module.exports = {
     debitar_saldo,
     pasarSaldo,
     getSaldo,
-    reporteRepartos,
-    misRepartos
+    allRepartos,
+    misRepartos,
+    pruebaSaldo
 }

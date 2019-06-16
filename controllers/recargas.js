@@ -53,7 +53,7 @@ function DoRecarga(req, res) {
 
 
 // cliente que quiere saber sus recargas 
-function listarRecargas(req, res) {
+function misRecargas(req, res) {
 
     var cliente = req.user.sub;
 
@@ -83,7 +83,8 @@ function listarRecargas(req, res) {
 
 // (Admin)
 function allRecargas(req, res) {
-    Recargas.find({}).populate('client', 'name').exec((err, infoFound) => {
+    Recargas.find({}).populate({ path: 'client', select: 'name' }).
+    populate({ path: 'producto', select: 'name' }).exec((err, infoFound) => {
         if (err) {
             return res.status(500).send({
                 message: 'Error al buscar recarga',
@@ -109,6 +110,6 @@ function allRecargas(req, res) {
 
 module.exports = {
     DoRecarga,
-    listarRecargas,
+    misRecargas,
     allRecargas
 };
