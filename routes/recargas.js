@@ -14,5 +14,4 @@ api.get('/listarRecargas', [md_auth.ensureAuth, md_cliente.isCliente], RecargasC
 api.get('/allRecargas', [md_auth.ensureAuth, md_global.isGlobal], RecargasController.allRecargas);
 
 
-
 module.exports = api;

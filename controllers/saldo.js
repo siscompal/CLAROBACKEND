@@ -104,7 +104,7 @@ function asignar_saldo(req, res) {
                                                                 } else {
                                                                     return res.status(200).send({
                                                                         saldoAsignado: saldoStored,
-                                                                        clienteConSaldo: cliente_consaldo
+                                                                        // clienteConSaldo: cliente_consaldo
                                                                     });
 
                                                                 }
@@ -189,7 +189,7 @@ function asignar_saldo(req, res) {
                                                     } else {
                                                         res.status(200).send({
                                                             saldoAsignado: saldoStored,
-                                                            clienteConSaldo: cliente_consaldo
+                                                            //clienteConSaldo: cliente_consaldo
                                                         });
 
                                                     }
@@ -319,7 +319,7 @@ function debitar_saldo(req, res) {
                                                                     } else {
                                                                         res.status(200).send({
                                                                             saldoDebitado: saldoStored,
-                                                                            clienteDebitado: cliente_debitado
+                                                                            //clienteDebitado: cliente_debitado
                                                                         });
 
                                                                     }
@@ -420,7 +420,7 @@ function debitar_saldo(req, res) {
                                                         } else {
                                                             res.status(200).send({
                                                                 message: saldoStored,
-                                                                clienteDebitado: cliente_debitado
+                                                                //clienteDebitado: cliente_debitado
                                                             });
 
                                                         }
@@ -597,7 +597,29 @@ function getSaldo(req, res) {
 
 }
 
+//Usuarios admin
 function reporteRepartos(req, res) {
+    Saldo.find({}).exec((err, infoFound) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Error al buscar reportes de saldo',
+            });
+
+        }
+        if (!infoFound) {
+            return res.status(404).send({
+                message: 'No se ha encontrado informacion',
+            });
+        } else {
+            return res.status(200).send({
+                InfoEncontrada: infoFound
+            });
+        }
+    });
+
+}
+
+function misRepartos(req, res) {
     var clientID = req.user.sub;
     Saldo.find({ cliente: clientID }).exec((err, infoFound) => {
         if (err) {
@@ -620,10 +642,13 @@ function reporteRepartos(req, res) {
 }
 
 
+
+
 module.exports = {
     asignar_saldo,
     debitar_saldo,
     pasarSaldo,
     getSaldo,
-    reporteRepartos
+    reporteRepartos,
+    misRepartos
 }

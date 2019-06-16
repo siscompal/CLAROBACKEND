@@ -104,7 +104,7 @@ function updateUser(req, res) {
 
 // listar all usuarios
 function getUsers(req, res) {
-    User.find({}).exec((err, users) => {
+    User.find({ status: true }).exec((err, users) => {
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
         } else {

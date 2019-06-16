@@ -63,7 +63,7 @@ function createProduct(req, res) {
 // listar todos los productos (admin)
 
 function getProducts(req, res) {
-    Product.find({}).populate({ path: 'user' }).exec((err, products) => {
+    Product.find({}).populate('user', 'name lastname').exec((err, products) => {
         // .populate('usuario', 'nombre apellidos') para solo devolver los campos que quiero.
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
