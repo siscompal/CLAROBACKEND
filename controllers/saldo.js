@@ -599,7 +599,7 @@ function getSaldo(req, res) {
 
 //Usuarios admin
 function allRepartos(req, res) {
-    Saldo.find({}).populate({ path: 'cliente', select: 'name' }).
+    Saldo.find({}).populate({ path: 'cliente', select: 'name role' }).
     populate({ path: 'user_Origen', select: 'name' }).populate({ path: 'client_Origen', select: 'name' }).exec((err, infoFound) => {
         if (err) {
             return res.status(500).send({
@@ -622,7 +622,7 @@ function allRepartos(req, res) {
 
 function misRepartos(req, res) {
     var clientID = req.user.sub;
-    Saldo.find({ cliente: clientID }).exec((err, infoFound) => {
+    Saldo.find({ cliente: clientID }).populate({ path: 'client_Origen', select: 'name' }).populate({ path: 'user_Origen', select: 'name' }).exec((err, infoFound) => {
         if (err) {
             return res.status(500).send({
                 message: 'Error al buscar reportes de saldo',

@@ -97,8 +97,7 @@ function getProduct(req, res) {
 
 function filtrarProducto(req, res) {
 
-    var parametros = req.body;
-    var tipo = parametros.tipo;
+    var tipo = req.params.tipo;
 
     if (tipo == "allInclusive") {
 

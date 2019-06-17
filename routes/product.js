@@ -11,7 +11,7 @@ const md_admin = require('../middlewares/isAdmin');
 api.post('/products', [md_auth.ensureAuth, md_admin.isAdmin], ProductController.createProduct);
 api.get('/products', [md_auth.ensureAuth, md_admin.isAdmin], ProductController.getProducts);
 api.get('/product/:id', [md_auth.ensureAuth, md_admin.isAdmin], ProductController.getProduct);
-api.post('/product/filtrar', md_auth.ensureAuth, ProductController.filtrarProducto);
+api.get('/products/:tipo', md_auth.ensureAuth, ProductController.filtrarProducto);
 api.put('/products/:id', [md_auth.ensureAuth, md_admin.isAdmin], ProductController.updateProduct);
 api.delete('/products/:id', [md_auth.ensureAuth, md_admin.isAdmin], ProductController.deleteProduct);
 

@@ -58,7 +58,7 @@ function misRecargas(req, res) {
     var cliente = req.user.sub;
 
     //  Recargas.find({ client: cliente }).populate('client', 'name lastname username').exec((err, infoFound) => {
-    Recargas.find({ client: cliente }).exec((err, infoFound) => {
+    Recargas.find({ client: cliente }).populate('producto', 'name').exec((err, infoFound) => {
         if (err) {
             return res.status(500).send({
                 message: 'Error al buscar recarga',
