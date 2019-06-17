@@ -16,6 +16,7 @@ api.put('/debitar/:id', [md_auth.ensureAuth, md_cargas.isCargas], SaldoControlle
 api.post('/pasarSaldo', [md_auth.ensureAuth], SaldoController.pasarSaldo);
 api.get('/balance', [md_auth.ensureAuth, md_admin.isAdmin], SaldoController.getSaldo);
 api.get('/misRepartos', [md_auth.ensureAuth], SaldoController.misRepartos);
+api.get('/movRepartos', [md_auth.ensureAuth], SaldoController.movRepartos); // para mayo y distri
 api.get('/allRepartos', [md_auth.ensureAuth, md_global.isGlobal], SaldoController.allRepartos);
 // api.put('/prueba/:id', [md_auth.ensureAuth, md_cargas.isCargas], SaldoController.pruebaSaldo);
 

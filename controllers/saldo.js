@@ -599,6 +599,7 @@ function getSaldo(req, res) {
 
 //Usuarios admin
 function allRepartos(req, res) {
+
     Saldo.find({}).populate({ path: 'cliente', select: 'name role' }).
     populate({ path: 'user_Origen', select: 'name' }).populate({ path: 'client_Origen', select: 'name' }).exec((err, infoFound) => {
         if (err) {
@@ -620,9 +621,33 @@ function allRepartos(req, res) {
 
 }
 
+// clientes que quieren ver sus saldos.
 function misRepartos(req, res) {
     var clientID = req.user.sub;
     Saldo.find({ cliente: clientID }).populate({ path: 'client_Origen', select: 'name' }).populate({ path: 'user_Origen', select: 'name' }).exec((err, infoFound) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Error al buscar reportes de saldo',
+            });
+
+        }
+        if (!infoFound) {
+            return res.status(404).send({
+                message: 'No se ha encontrado informacion',
+            });
+        } else {
+            return res.status(200).send({
+                InfoEncontrada: infoFound
+            });
+        }
+    });
+
+}
+
+// mayo y distri que ven los saldos que asignan o debitan a otros clientes
+function movRepartos(req, res) {
+    var clientId = req.user.sub;
+    Saldo.find({ client_Origen: clientId }).populate('cliente', 'name lastname').exec((err, infoFound) => {
         if (err) {
             return res.status(500).send({
                 message: 'Error al buscar reportes de saldo',
@@ -760,5 +785,6 @@ module.exports = {
     getSaldo,
     allRepartos,
     misRepartos,
-    pruebaSaldo
+    pruebaSaldo,
+    movRepartos
 }
