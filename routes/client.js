@@ -12,7 +12,7 @@ const md_cliadmin = require('../middlewares/isCliadmin');
 
 api.post('/register', ClientController.register);
 api.post('/clients', [md_auth.ensureAuth, md_global.isGlobal], ClientController.createClient);
-api.put('/client/:id', [md_auth.ensureAuth, md_global.isGlobal], ClientController.updateClient);
+api.put('/client/:id', [md_auth.ensureAuth], ClientController.updateClient);
 api.get('/client/:id', [md_auth.ensureAuth], ClientController.getClient);
 api.get('/clients', [md_auth.ensureAuth, md_global.isGlobal], ClientController.getClients);
 api.get('/myclients', [md_auth.ensureAuth, md_cliadmin.isCliadmin], ClientController.getMyClients);

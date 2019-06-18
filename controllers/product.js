@@ -12,11 +12,9 @@ function createProduct(req, res) {
 
     var parametros = req.body;
 
-    console.log(parametros);
 
     if (parametros.name && parametros.precio && parametros.codigo && parametros.descripcion && parametros.tipo && parametros.incentivo) {
         // setteo las variables
-        console.log("recibo");
         product.name = parametros.name;
         product.precio = parametros.precio;
         product.codigo = parametros.codigo;
@@ -40,7 +38,6 @@ function createProduct(req, res) {
                             if (!productStored) {
                                 res.status(404).send({ message: 'No se ha guardado el producto' });
                             } else {
-                                console.log("guardado");
                                 res.status(200).send({ productoGuardado: productStored });
 
                             }
@@ -54,7 +51,6 @@ function createProduct(req, res) {
         });
 
     } else {
-        console.log("no he recibido nada");
         res.status(200).send({ message: 'Todos los campos son obligatorios' });
     }
 

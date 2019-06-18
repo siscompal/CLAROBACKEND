@@ -647,7 +647,7 @@ function misRepartos(req, res) {
 // mayo y distri que ven los saldos que asignan o debitan a otros clientes
 function movRepartos(req, res) {
     var clientId = req.user.sub;
-    Saldo.find({ client_Origen: clientId }).populate('cliente', 'name lastname').exec((err, infoFound) => {
+    Saldo.find({ client_Origen: clientId }).populate('cliente', 'name lastname role').exec((err, infoFound) => {
         if (err) {
             return res.status(500).send({
                 message: 'Error al buscar reportes de saldo',
