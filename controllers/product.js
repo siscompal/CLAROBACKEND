@@ -12,8 +12,7 @@ function createProduct(req, res) {
 
     var parametros = req.body;
 
-
-    if (parametros.name && parametros.precio && parametros.codigo && parametros.descripcion && parametros.tipo && parametros.incentivo) {
+    if (parametros.name && parametros.precio && parametros.codigo && parametros.descripcion && parametros.tipo && parametros.incentivo >= 0) {
         // setteo las variables
         product.name = parametros.name;
         product.precio = parametros.precio;
@@ -25,12 +24,12 @@ function createProduct(req, res) {
         product.user = req.user.sub; //  req.user.sub para guardar el id del usuario logueado
         product.incentivo = parametros.incentivo;
         product.descripcion = parametros.descripcion;
-
-        Product.findOne({ codigo: parametros.codigo.toLowerCase() }, (err, productoDB) => {
+        Product.findOne({ codigo: parametros.codigo }, (err, productoDB) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar producto' });
             } else {
                 if (!productoDB) {
+                    console.log(product);
                     product.save((err, productStored) => {
                         if (err) {
                             res.status(500).send({ message: 'Error en el servidor' });
@@ -44,7 +43,7 @@ function createProduct(req, res) {
                         }
                     });
                 } else {
-                    res.status(200).send({ message: 'Producto existente' });
+                    res.status(500).send({ message: 'Producto existente' });
                 }
 
             }
@@ -94,57 +93,123 @@ function getProduct(req, res) {
 function filtrarProducto(req, res) {
 
     var tipo = req.params.tipo;
+    console.log(tipo);
 
-    if (tipo == "allInclusive") {
+    if (tipo == "todoIncluido") {
 
-        Product.find({ tipo: tipo }, (err, tipoAllinclusive) => {
+        Product.find({ tipo: tipo }, (err, todoIncluido) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar el producto' });
             } else {
-                if (!tipoAllinclusive) {
+                if (!todoIncluido) {
                     res.status(404).send({ message: 'Producto no encontrado' });
                 } else {
-                    res.status(200).send({ all_inclusive: tipoAllinclusive });
+                    res.status(200).send({ data: todoIncluido });
                 }
             }
         });
 
 
-    } else if (tipo == "datos") {
-        Product.find({ tipo: tipo }, (err, tipoDatos) => {
+    } else if (tipo == "voz") {
+        Product.find({ tipo: tipo }, (err, voz) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar el producto' });
             } else {
-                if (!tipoDatos) {
+                if (!voz) {
                     res.status(404).send({ message: 'Producto no encontrado' });
                 } else {
-                    res.status(200).send({ Datos: tipoDatos });
+                    res.status(200).send({ data: voz });
                 }
             }
         });
 
-    } else if (tipo == "minutos") {
-        Product.find({ tipo: tipo }, (err, tipoMinutos) => {
+    } else if (tipo == "largaDistancia") {
+        Product.find({ tipo: tipo }, (err, largaDistancia) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar el producto' });
             } else {
-                if (!tipoMinutos) {
+                if (!largaDistancia) {
                     res.status(404).send({ message: 'Producto no encontrado' });
                 } else {
-                    res.status(200).send({ Minutos: tipoMinutos });
+                    res.status(200).send({ data: largaDistancia });
                 }
             }
         });
 
-    } else if (tipo == "aplicaciones") {
-        Product.find({ tipo: tipo }, (err, tipoApp) => {
+    } else if (tipo == "navegacion") {
+        Product.find({ tipo: tipo }, (err, navegacion) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar el producto' });
             } else {
-                if (!tipoApp) {
+                if (!navegacion) {
                     res.status(404).send({ message: 'Producto no encontrado' });
                 } else {
-                    res.status(200).send({ Apps: tipoApp });
+                    res.status(200).send({ data: navegacion });
+                }
+            }
+        });
+
+    } else if (tipo == "chat") {
+        Product.find({ tipo: tipo }, (err, chat) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!chat) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ data: chat });
+                }
+            }
+        });
+
+    } else if (tipo == "tv") {
+        Product.find({ tipo: tipo }, (err, tv) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!tv) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ data: tv });
+                }
+            }
+        });
+
+    } else if (tipo == "apps") {
+        Product.find({ tipo: tipo }, (err, Apps) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!Apps) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ data: Apps });
+                }
+            }
+        });
+
+    } else if (tipo == "internetInalambrico") {
+        Product.find({ tipo: tipo }, (err, internetInalambrico) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!internetInalambrico) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ data: internetInalambrico });
+                }
+            }
+        });
+
+    } else if (tipo == "minuteras") {
+        Product.find({ tipo: tipo }, (err, minuteras) => {
+            if (err) {
+                res.status(500).send({ message: 'Error al verificar el producto' });
+            } else {
+                if (!minuteras) {
+                    res.status(404).send({ message: 'Producto no encontrado' });
+                } else {
+                    res.status(200).send({ data: minuteras });
                 }
             }
         });

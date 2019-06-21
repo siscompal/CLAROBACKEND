@@ -24,7 +24,6 @@ function DoRecarga(req, res) {
                             // verificar de que bolsa se haran las recargas
                             peticion.datosPeticion(res, req, parametros, cliente_buscado, productoDB);
 
-
                         } else {
                             res.status(400).send({ message: 'Escoja una bolsa' });
                         }
@@ -44,8 +43,6 @@ function DoRecarga(req, res) {
         }
 
     });
-
-
 
 } // fin de doRecarga
 
