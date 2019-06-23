@@ -26,8 +26,6 @@ function getip_black(req, res) {
     });
 }
 
-
-
 function delete_ip_black(req, res) {
 
     var Ip_Id = req.params.id;

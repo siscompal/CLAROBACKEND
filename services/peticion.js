@@ -31,25 +31,23 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             }
-            console.log(options);
+            console.log("Estas son las opciones: " + options);
 
             request(options, function(error, response, body) {
                     console.log("Entró a request", body);
                     if (!error && response.statusCode == 200) {
 
-                        console.log(body);
+                        console.log("Este es el body " + body);
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
                         // var respu = nojson.respuesta;
-
+                        // res.status(200).send({ respuesta: respu });
                         // comentar cuando vaya a produccion
                         var respu = "Recarga exitosa";
 
                         if (respu.includes("Recarga exitosa")) {
 
                             if (productoDB.codigo == "1") {
-
-
 
                                 var updateSaldo = cliente_buscado.saldo_actual - parametros.monto;
                                 var updateIncentivo = productoDB.incentivo + cliente_buscado.incentivo_actual;

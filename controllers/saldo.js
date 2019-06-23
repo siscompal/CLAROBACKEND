@@ -56,9 +56,9 @@ function asignar_saldo(req, res) {
 
                                     } else { // si cliente es encontrado
 
-                                        if (saldo.valor <= 20000) {
+                                        if (saldo.valor < 20000) {
                                             res.status(200).send({
-                                                message: 'El valor debe ser mayor a 20000'
+                                                message: 'El valor minimo es 20000'
                                             });
                                         } else {
                                             //cuando todo esta ok
@@ -141,9 +141,9 @@ function asignar_saldo(req, res) {
 
                         } else { // si cliente a asignar es encontrado
 
-                            if (saldo.valor <= 20000) {
+                            if (saldo.valor < 20000) {
                                 res.status(200).send({
-                                    message: 'El valor debe ser mayor a 20000'
+                                    message: 'El valor minimo es 20000'
                                 });
                             } else {
                                 //cuando todo esta ok
@@ -568,7 +568,7 @@ function pasarSaldo(req, res) {
 function getSaldo(req, res) {
     console.log("Show saldo");
     var options = {
-        url: process.env.SALDO + '/' + process.env.KEY,
+        url: process.env.SALDO + '/' + process.env.ID + '/' + process.env.KEY,
         method: 'GET',
     }
 

@@ -12,7 +12,8 @@ function createProduct(req, res) {
 
     var parametros = req.body;
 
-    if (parametros.name && parametros.precio && parametros.codigo && parametros.descripcion && parametros.tipo && parametros.incentivo >= 0) {
+    if (parametros.name && parametros.precio && parametros.codigo && parametros.descripcion &&
+        parametros.tipo && parametros.incentivo >= 0) {
         // setteo las variables
         product.name = parametros.name;
         product.precio = parametros.precio;
@@ -250,7 +251,7 @@ function deleteProduct(req, res) {
             if (!productRemoved) {
                 res.status(404).send({ message: 'No se ha borrado el producto' });
             } else {
-                res.status(200).send({ producto: productRemoved });
+                res.status(200).send({ message: 'Producto eliminado exitosamente' });
             }
         }
     });

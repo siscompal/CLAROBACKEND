@@ -19,7 +19,8 @@ function createUser(req, res) {
 
     //Asignar valores al objeto usuario
 
-    if (parametros.iden && parametros.lastname && parametros.name && parametros.username && parametros.role) {
+    if (parametros.iden && parametros.lastname && parametros.name &&
+        parametros.username && parametros.role && parametros.cel && parametros.password) {
         user.name = parametros.name;
         user.lastname = parametros.lastname;
         user.iden = parametros.iden;
@@ -74,8 +75,6 @@ function updateUser(req, res) {
     var userId = req.params.id;
     //recibimos los datos del body
     var update = req.body;
-
-
     // new:true me devuelve el objeto que ha sido actualizado
     User.findByIdAndUpdate(userId, update, { new: true }, (err, userUpdated) => {
         if (err) {
@@ -92,12 +91,9 @@ function updateUser(req, res) {
                     message: 'Usuario actualizado correctamente',
                     user: userUpdated
                 });
-                // return res.status(200).send({ user: userUpdated });
-
             }
         }
     });
-
 
 }
 

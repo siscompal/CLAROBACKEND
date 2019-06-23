@@ -15,7 +15,9 @@ function createClient(req, res) {
     var parametros = req.body;
     var client = new Client();
 
-    if (parametros.name && parametros.lastname && parametros.iden && parametros.email && parametros.username && parametros.password && parametros.city && parametros.dir && parametros.cel && parametros.porcentaje && parametros.role) {
+    if (parametros.name && parametros.lastname && parametros.iden && parametros.email &&
+        parametros.username && parametros.password && parametros.city && parametros.dir &&
+        parametros.cel && parametros.porcentaje && parametros.role) {
         client.name = parametros.name;
         client.lastname = parametros.lastname;
         client.iden = parametros.iden;
@@ -79,7 +81,8 @@ function register(req, res) {
     var parametros = req.body;
     var client = new Client();
 
-    if (parametros.name && parametros.lastname && parametros.iden && parametros.email && parametros.username && parametros.password) {
+    if (parametros.name && parametros.lastname && parametros.iden && parametros.email &&
+        parametros.username && parametros.password) {
         client.name = parametros.name;
         client.lastname = parametros.lastname;
         client.iden = parametros.iden;
@@ -90,7 +93,7 @@ function register(req, res) {
         client.dir = parametros.dir;
         client.cel = parametros.cel;
         client.porcentaje = 5;
-        client.efecty = parametros.efecty;
+        client.efecty = true;
         client.status = true;
         client.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
         client.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
@@ -101,7 +104,7 @@ function register(req, res) {
         client.incentivo_actual = 0;
 
         // Buscar clientes repetidos 
-        Client.findOne({ username: parametros.username.toLowerCase() }, (err, clienteDB) => {
+        Client.findOne({ username: parametros.username }, (err, clienteDB) => {
             if (err) {
                 res.status(500).send({ message: 'Error al verificar el cliente' });
             } else {
@@ -203,6 +206,7 @@ function getClient(req, res) {
 
 // clientes que quieran ver su arbol de clientes
 function getMyClients(req, res) {
+
     var cliente = req.user.sub;
 
     Client.find({ user: cliente }).exec((err, clientes) => {
