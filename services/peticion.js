@@ -40,7 +40,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         console.log("Este es el body " + body);
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
-                        // var respu = nojson.respuesta;
+                        var respu = nojson.respuesta;
                         // res.status(200).send({ respuesta: respu });
                         // comentar cuando vaya a produccion
                         var respu = "Recarga exitosa";
