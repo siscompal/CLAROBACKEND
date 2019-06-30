@@ -204,6 +204,24 @@ function getClient(req, res) {
 
 }
 
+function getMyInfo(req, res) {
+    var clientId = req.user.sub;
+
+    Client.findById(clientId).exec((err, cliente) => {
+        // .populate('el_usuario', 'nombre apellidos') para solo devolver los campos que quiero.
+        if (err) {
+            res.status(500).send({ message: 'Error en la peticion' });
+        } else {
+            if (!cliente) {
+                res.status(404).send({ message: 'No hay clientes' });
+            } else {
+                res.status(200).send({ cliente });
+            }
+        }
+    });
+
+}
+
 // clientes que quieran ver su arbol de clientes
 function getMyClients(req, res) {
 
@@ -256,6 +274,6 @@ module.exports = {
     getClients,
     getClient,
     getMyClients,
-    deleteClient
-
+    deleteClient,
+    getMyInfo
 }
