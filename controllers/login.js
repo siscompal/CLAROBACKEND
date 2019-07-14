@@ -80,6 +80,91 @@ function login(req, res) {
     });
 }
 
+function updatePassword(req, res) {
+
+    var usucliId = req.params.id;
+    var parametros = req.body;
+    var pass = parametros.password;
+    let newpass;
+
+    User.findById(usucliId, (err, userId) => {
+        if (err) {
+            return res.status(500).send({ message: "Internal server error" });
+        } else {
+            if (userId) {
+                bcrypt.hash(pass, null, null, function(err, hash) {
+                    userId.password = hash;
+                    let newpass = userId.password;
+
+                    console.log(userId.password);
+                    User.findByIdAndUpdate(userId, { password: newpass }, { new: true }, (err, update) => {
+                        if (err) {
+                            return res.status(500).send({
+                                message: 'Internal server error',
+                            });
+                        } else {
+                            if (!update) {
+                                return res.status(404).send({
+                                    message: 'Error al cambiar contraseña',
+                                });
+                            } else {
+                                return res.status(200).send({
+                                    message: 'Contraseña cambiada exitosamente',
+                                    user: update
+                                });
+                            }
+                        }
+
+                    });
+                });
+
+            } else {
+                Client.findById(usucliId, (err, clientId) => {
+                    if (!err) {
+                        return res.status(500).send({ message: "Internal server error" });
+                    } else {
+                        if (clientId) {
+                            bcrypt.hash(pass, null, null, function(err, hash) {
+                                clientId.password = hash;
+                                let newpass = clientId.password;
+
+
+                                Client.findByIdAndUpdate(clientId, { password: newpass }, { new: true }, (err, update) => {
+                                    if (err) {
+                                        return res.status(500).send({
+                                            message: 'Internal server error',
+                                        });
+                                    } else {
+                                        if (!update) {
+                                            return res.status(404).send({
+                                                message: 'Error al cambiar contraseña',
+                                            });
+                                        } else {
+                                            return res.status(200).send({
+                                                message: 'Contraseña cambiada exitosamente',
+                                                user: update
+                                            });
+                                        }
+                                    }
+
+                                });
+                            });
+
+                        } else {
+
+                            return res.status(404).send({ message: "Usuario no encontrado" });
+                        }
+                    }
+
+                });
+            }
+        }
+
+    });
+
+}
+
 module.exports = {
-    login
+    login,
+    updatePassword
 }

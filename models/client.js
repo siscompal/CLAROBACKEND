@@ -12,7 +12,7 @@ var ClienteSchema = Schema({
     dir: { type: String, required: true },
     cel: { type: Number, required: true },
     porcentaje: { type: Number, required: true },
-    efecty: { type: Boolean, default: false },
+    efecty: { type: Boolean, default: true },
     status: { type: Boolean, required: true },
     fec_cre: { type: Date, default: Date.now() },
     fec_upd: { type: Date, default: Date.now() },

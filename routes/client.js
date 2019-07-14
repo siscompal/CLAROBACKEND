@@ -1,4 +1,9 @@
 'use strict'
+// otra forma de importar el router
+/*
+const { Router } = require('express');
+const variable = Router();
+*/
 
 const express = require('express');
 const api = express.Router();

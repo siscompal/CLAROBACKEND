@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 
 // rutas base
 // aqui ya esta cargada la configuracion de rutas en express, lista para comenzar
+// app.use(require('ruta donde este el archivo de la ruta'));
 app.use('/api', recargas_routes);
 app.use('/api', login_routes);
 app.use('/api', user_routes);

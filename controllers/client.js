@@ -28,7 +28,7 @@ function createClient(req, res) {
         client.dir = parametros.dir;
         client.cel = parametros.cel;
         client.porcentaje = parametros.porcentaje;
-        client.efecty = parametros.efecty;
+        client.efecty = true;
         client.status = true;
         client.fec_cre = moment().format('YYYY MM DD HH:mm:ss');
         client.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
@@ -266,6 +266,36 @@ function deleteClient(req, res) {
     });
 }
 
+function updatePassword(req, res) {
+    var clientId = req.params.id;
+    var update = req.body;
+
+    bcrypt.hash(update, null, null, function(err, hash) {
+        update = hash;
+    });
+
+    Client.findByIdAndUpdate(clientId, update, { new: true }, (err, clientUpdated) => {
+        if (err) {
+            return res.status(500).send({
+                message: 'Internal server error',
+            });
+        } else {
+            if (!clientUpdated) {
+                return res.status(404).send({
+                    message: 'No se ha podido actualizar el cliente',
+                });
+            } else {
+
+                return res.status(200).send({
+                    message: 'Cliente actualizado correctamente',
+                    clienteUpdated: clientUpdated
+                });
+
+            }
+        }
+    });
+
+}
 
 module.exports = {
     register,
