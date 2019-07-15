@@ -1,3 +1,4 @@
+'use strict'
 const request = require('request');
 const Recarga = require('../models/recargas');
 const moment = require('moment');
@@ -10,7 +11,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
     if (parametros.bolsa == "saldo") {
 
         if (parametros.monto <= cliente_buscado.saldo_actual) {
-            var recarga = new Recarga();
+            const recarga = new Recarga();
             recarga.numero = parametros.numero;
             recarga.monto = parametros.monto;
             // recarga.producto = parametros.producto;
@@ -19,7 +20,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
             recarga.fec_upd = moment().format('YYYY MM DD HH:mm:ss');
             recarga.client = req.user.sub;
 
-            var options = {
+            const options = {
                 url: process.env.URL,
                 body: JSON.stringify({
                     'key': process.env.KEY,

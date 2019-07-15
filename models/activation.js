@@ -1,11 +1,13 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var activationSchema = Schema({
-    numero: { type: Number, required: true },
-    iccid: { type: Number, required: true },
+const activationSchema = Schema({
+    id_pdv: { type: String, required: true },
+    numero: { type: String, required: true },
+    iccid: { type: String, required: true },
     status: { type: Boolean, dafault: false },
- 
+    fec_cre: { type: Date, default: Date.now() },
+    fec_sol: { type: Date}
 });
 
-module.exports = mongoose.model('Activation', ProductSchema);
+module.exports = mongoose.model('Activation', activationSchema);

@@ -6,10 +6,7 @@ const moment = require('moment');
 
 //MODELOS
 const Client = require('../models/client');
-const User = require('../models/user');
 
-// servicios jwt 
-const jwt = require('../services/jwt');
 
 function createClient(req, res) {
     var parametros = req.body;

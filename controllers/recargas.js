@@ -1,10 +1,10 @@
 'use strict'
 
 // modelos
-var Product = require('../models/product');
-var Client = require('../models/client');
-var peticion = require('../services/peticion');
-var Recargas = require('../models/recargas');
+const Product = require('../models/product');
+const Client = require('../models/client');
+const peticion = require('../services/peticion');
+const Recargas = require('../models/recargas');
 
 function DoRecarga(req, res) {
 

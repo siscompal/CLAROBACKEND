@@ -2,7 +2,8 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const multer = require('multer');
+const path = require('path');
 // cargar el framework de express directamente. se inicializa el servidor atraves de esta variable
 const app = express();
 
@@ -13,8 +14,16 @@ const client_routes = require('./routes/client');
 const saldo_routes = require('./routes/saldo');
 const recargas_routes = require('./routes/recargas');
 const login_routes = require('./routes/login');
+const activation_routes = require('./routes/activation');
+const image_routes = require('./routes/image');
 
-
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, 'public/uploads'),
+    filename(req, file, cb) {
+        cb(null, new Date().getTime() + path.extname(file.originalname));
+    }
+})
+app.use(multer({storage}).single('image'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -38,7 +47,7 @@ app.use('/api', user_routes);
 app.use('/api', product_routes);
 app.use('/api', client_routes);
 app.use('/api', saldo_routes);
-
-
+app.use('/api', activation_routes);
+app.use('/api', image_routes);
 
 module.exports = app;
