@@ -13,7 +13,6 @@ function uploadImage(req, res) {
 }
 
 
-
 module.exports = {
     uploadImage,
 
