@@ -8,9 +8,10 @@ const moment = require('moment');
 const Client = require('../models/client');
 
 
-function createClient(req, res) {
-    var parametros = req.body;
-    var client = new Client();
+async function createClient(req, res) {
+    const parametros = req.body;
+    const client = new Client();
+    let number = (await Client.countDocuments({})) + 1;
 
     if (parametros.name && parametros.lastname && parametros.iden && parametros.email &&
         parametros.username && parametros.password && parametros.city && parametros.dir &&
@@ -34,6 +35,7 @@ function createClient(req, res) {
         client.saldo_actual = 0;
         client.comision_actual = 0;
         client.incentivo_actual = 0;
+        client.efectyId = number;
 
 
         // Buscar clientes repetidos 
@@ -74,9 +76,10 @@ function createClient(req, res) {
 
 }
 
-function register(req, res) {
+async function register(req, res) {
     var parametros = req.body;
     var client = new Client();
+    let number = (await Client.countDocuments({})) + 1;
 
     if (parametros.name && parametros.lastname && parametros.iden && parametros.email &&
         parametros.username && parametros.password) {
@@ -99,6 +102,7 @@ function register(req, res) {
         client.saldo_actual = 0;
         client.comision_actual = 0;
         client.incentivo_actual = 0;
+        client.efectyId = number;
 
         // Buscar clientes repetidos 
         Client.findOne({ username: parametros.username }, (err, clienteDB) => {

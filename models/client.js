@@ -25,6 +25,7 @@ var ClienteSchema = Schema({
         enum: ['CLI_MAYORISTA', 'CLI_DISTRIBUIDOR', 'CLI_CLIENTE'],
         required: true
     },
+    efectyId: { type: String, required: true }
 
 
 });

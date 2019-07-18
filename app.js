@@ -18,12 +18,13 @@ const activation_routes = require('./routes/activation');
 const image_routes = require('./routes/image');
 
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, 'public/uploads'),
+    destination: path.join(__dirname, 'public/uploads/temp'),
     filename(req, file, cb) {
         cb(null, new Date().getTime() + path.extname(file.originalname));
     }
 })
-app.use(multer({storage}).single('image'));
+app.use(multer({ storage }).single('image'));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

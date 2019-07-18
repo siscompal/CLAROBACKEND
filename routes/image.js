@@ -6,6 +6,8 @@ const ImageController = require('../controllers/image');
 const md_auth = require('../middlewares/authenticated');
 
 
-api.post('/upload', ImageController.uploadImage);
+api.post('/image', ImageController.uploadImage);
+api.delete('/image/:id', ImageController.deleteImage);
+api.get('/images', ImageController.getImages);
 
 module.exports = api;

@@ -45,7 +45,7 @@ mongoose.connect('mongodb://localhost:27017/claro', { useNewUrlParser: true })
 
         // crear el servidor web y lanzarlo
         app.listen(port, () => {
-            console.log('El servidor local con node y express esta corriendo');
+            console.log('El servidor local con node y express esta corriendo en el puerto ' + port);
         });
     })
     .catch(err => console.log(err));
