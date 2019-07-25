@@ -85,11 +85,11 @@ function updatePassword(req, res) {
     var usucliId = req.params.id;
     var parametros = req.body;
     var pass = parametros.password;
-    let newpass;
+   
 
     User.findById(usucliId, (err, userId) => {
         if (err) {
-            return res.status(500).send({ message: "Internal server error" });
+            return res.status(500).send({ message: "Prueba de error" });
         } else {
             if (userId) {
                 bcrypt.hash(pass, null, null, function(err, hash) {
@@ -100,7 +100,7 @@ function updatePassword(req, res) {
                     User.findByIdAndUpdate(userId, { password: newpass }, { new: true }, (err, update) => {
                         if (err) {
                             return res.status(500).send({
-                                message: 'Internal server error',
+                                message: 'Internal server error 1',
                             });
                         } else {
                             if (!update) {
@@ -119,9 +119,10 @@ function updatePassword(req, res) {
                 });
 
             } else {
+		console.log("Es un cliente");
                 Client.findById(usucliId, (err, clientId) => {
-                    if (!err) {
-                        return res.status(500).send({ message: "Internal server error" });
+                    if (err) {
+                        return res.status(500).send({ message: "Internal server error 2" });
                     } else {
                         if (clientId) {
                             bcrypt.hash(pass, null, null, function(err, hash) {
@@ -132,7 +133,7 @@ function updatePassword(req, res) {
                                 Client.findByIdAndUpdate(clientId, { password: newpass }, { new: true }, (err, update) => {
                                     if (err) {
                                         return res.status(500).send({
-                                            message: 'Internal server error',
+                                            message: 'Internal server error 3',
                                         });
                                     } else {
                                         if (!update) {

@@ -1,4 +1,3 @@
-
 'use strict'
 // MODULOS
 const Activacion = require('../models/activation');
@@ -11,7 +10,6 @@ function createSim(req, res) {
     var parametros = req.body;
 
     if (parametros.id_pdv && parametros.numero && parametros.iccid) {
-        // setteo las variables
         activacion.id_pdv = parametros.id_pdv;
         activacion.numero = parametros.numero;
         activacion.iccid = parametros.iccid;
@@ -67,6 +65,7 @@ function getSims(req, res) {
 }
 
 
+
 function updateSim(req, res) {
 
     var simId = req.params.id;
@@ -108,6 +107,7 @@ function activateSim(req, res) {
 module.exports = {
     createSim,
     getSims,
+    getSim,
     updateSim,
     activateSim
 };

@@ -42,9 +42,9 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
                         var respu = nojson.respuesta;
-                        // res.status(200).send({ respuesta: respu });
-                        // comentar cuando vaya a produccion
-                        var respu = "Recarga exitosa";
+                        res.status(200).send({ respuesta: respu });
+                        
+                        // var respu = "Recarga exitosa";
 
                         if (respu.includes("Recarga exitosa")) {
 
