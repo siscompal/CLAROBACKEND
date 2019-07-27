@@ -42,7 +42,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
                         var respu = nojson.respuesta;
-                        res.status(200).send({ respuesta: respu });
+                       // res.status(200).send({ respuesta: respu });
                         
                         // var respu = "Recarga exitosa";
 
@@ -155,7 +155,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                                     if (!recargaStored) {
                                         res.status(404).send({ message: 'No se ha guardado la recarga' });
                                     } else {
-                                        return res.status(200).send({ respuesta: respu });
+                                        return res.status(404).send({ respuesta: respu });
                                     }
                                 }
                             });
@@ -204,8 +204,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         console.log(body);
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
-                        // var respu = nojson.respuesta;
-                        var respu = "Recarga exitosa";
+                        var respu = nojson.respuesta;
 
                         if (respu.includes("Recarga exitosa")) {
                             // SI ES RECARGA 
@@ -313,7 +312,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                                     if (!recargaStored) {
                                         res.status(404).send({ message: 'No se ha guardado la recarga' });
                                     } else {
-                                        return res.status(200).send({ respuesta: respu });
+                                        return res.status(404).send({ respuesta: respu });
                                     }
                                 }
                             });
@@ -361,9 +360,8 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                         console.log(body);
                         var nojson = JSON.parse(body);
                         console.log("este es el nojson " + nojson.respuesta);
-                        //var respu = nojson.respuesta;
-                        var respu = "Recarga exitosa";
-
+                        var respu = nojson.respuesta;
+                        
                         if (respu.includes("Recarga exitosa")) {
                             // SI ES RECARGA
                             if (productoDB.codigo == "1") {
@@ -470,7 +468,7 @@ function datosPeticion(res, req, parametros, cliente_buscado, productoDB) {
                                     if (!recargaStored) {
                                         res.status(404).send({ message: 'No se ha guardado la recarga' });
                                     } else {
-                                        return res.status(200).send({ respuesta: respu });
+                                        return res.status(404).send({ respuesta: respu });
                                     }
                                 }
                             });

@@ -12,7 +12,7 @@ function createProduct(req, res) {
 
     var parametros = req.body;
 
-    if (parametros.name && parametros.precio && parametros.codigo && parametros.descripcion &&
+    if (parametros.name && parametros.precio >=0  && parametros.codigo && parametros.descripcion &&
         parametros.tipo && parametros.incentivo >= 0) {
         // setteo las variables
         product.name = parametros.name;
@@ -51,7 +51,7 @@ function createProduct(req, res) {
         });
 
     } else {
-        res.status(200).send({ message: 'Todos los campos son obligatorios' });
+        res.status(404).send({ message: 'Todos los campos son obligatorios' });
     }
 
 }

@@ -65,13 +65,13 @@ async function createClient(req, res) {
                         });
                     });
                 } else {
-                    res.status(404).send({ message: 'Cliente existente' });
+                    res.status(200).send({ message: 'Cliente existente' });
                 }
             }
         });
 
     } else {
-        res.status(404).send({ message: 'Introduce los datos correctamente' });
+        res.status(200).send({ message: 'Introduce los datos correctamente' });
     }
 
 }
@@ -131,13 +131,13 @@ async function register(req, res) {
                         });
                     });
                 } else {
-                    res.status(404).send({ message: 'Nombre de usuario no disponible' });
+                    res.status(200).send({ message: 'Cliente existente' });
                 }
             }
         });
 
     } else {
-        res.status(404).send({ message: 'Introduce los datos correctamente' });
+        res.status(200).send({ message: 'Introduce los datos correctamente' });
     }
 
 }
@@ -149,8 +149,9 @@ function updateClient(req, res) {
 
     Client.findByIdAndUpdate(clientId, update, { new: true }, (err, clientUpdated) => {
         if (err) {
+		console.log(err);
             return res.status(500).send({
-               		 message: 'Error al actualizar cliente',
+                message: 'Error al actualizar cliente',
             });
         } else {
             if (!clientUpdated) {

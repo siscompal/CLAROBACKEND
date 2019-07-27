@@ -37,7 +37,7 @@ function createSim(req, res) {
                         }
                     });
                 } else {
-                    res.status(200).send({ message: 'Sim existente' });
+                    res.status(404).send({ message: 'Sim existente' });
                 }
 
             }
@@ -52,7 +52,7 @@ function createSim(req, res) {
 // listar todos los productos (admin)
 
 function getSims(req, res) {
-    Activacion.find({}).exec((err, sims) => {
+    Activacion.find({status: false}).exec((err, sims) => {
         
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });

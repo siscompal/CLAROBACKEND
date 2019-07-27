@@ -60,12 +60,12 @@ function createUser(req, res) {
                         });
                     });
                 } else {
-                    res.status(200).send({ message: 'Usuario existente' });
+                    res.status(404).send({ message: 'Usuario existente' });
                 }
             }
         });
     } else {
-        res.status(200).send({ message: 'Introduce los datos correctamente' });
+        res.status(404).send({ message: 'Introduce los datos correctamente' });
     }
 }
 
