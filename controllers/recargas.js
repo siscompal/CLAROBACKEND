@@ -103,10 +103,28 @@ function allRecargas(req, res) {
 
 }
 
+function lastRecargas(req, res) {
+    var cliente = req.user.sub;
+
+    Recargas.find({ client: cliente }).sort({ fec_cre: -1 }).limit(5).exec((err, last) => {
+        if (err) {
+            return res.status(500).send({ message: 'Error interno' });
+        } else {
+            if (!last) {
+                return res.status(400).send({ message: 'No se ha encontrado información' });
+            } else {
+                return res.status(200).send({ message: last });
+            }
+        }
+    });
+
+}
+
 
 
 module.exports = {
     DoRecarga,
     misRecargas,
-    allRecargas
+    allRecargas,
+    lastRecargas
 };

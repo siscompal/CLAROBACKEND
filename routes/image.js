@@ -4,9 +4,9 @@ const express = require('express');
 const api = express.Router();
 const ImageController = require('../controllers/image');
 const md_auth = require('../middlewares/authenticated');
-const multipart = require('connect-multiparty'); 
+const multipart = require('connect-multiparty');
 
-var multipartMiddleware = multipart({uploadDir: './uploads'});
+var multipartMiddleware = multipart({ uploadDir: './uploads' });
 
 api.post('/image', multipartMiddleware, ImageController.uploadImage);
 api.delete('/image/:id', ImageController.deleteImage);

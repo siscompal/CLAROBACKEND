@@ -12,6 +12,6 @@ const md_global = require('../middlewares/isGlobal');
 api.post('/recargas', [md_auth.ensureAuth, md_cliente.isCliente], RecargasController.DoRecarga);
 api.get('/misRecargas', [md_auth.ensureAuth, md_cliente.isCliente], RecargasController.misRecargas);
 api.get('/allRecargas', [md_auth.ensureAuth, md_global.isGlobal], RecargasController.allRecargas);
-
+api.get('/last', md_auth.ensureAuth, RecargasController.lastRecargas);
 
 module.exports = api;
