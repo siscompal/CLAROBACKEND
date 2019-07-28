@@ -11,11 +11,16 @@ function uploadImage(req, res) {
 
     let fileName = 'Imagen no subida...';
     let imagen = new Imagen;
+    console.log(req.files);
     if(req.files){
+
         var filePath = req.files.image.path;
-        var fileSplit = filePath.split('\\');
+	console.log(filePath);       
+ 	var fileSplit = filePath.split('/');
+	console.log(fileSplit);
         fileName = fileSplit[1];
-        var extSplit = fileName.split('\.');
+	console.log(fileName);
+        var extSplit = fileName.split('.');
         var fileExt = extSplit[1].toLowerCase();
         imagen.imagePath = fileName;
         if(fileExt == 'png' || fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){

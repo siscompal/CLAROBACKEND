@@ -1,6 +1,6 @@
 'use strict'
 
-/*
+
 const mongoose = require('mongoose');
 const app = require('./app');
 require('dotenv').config();
@@ -28,9 +28,9 @@ mongoose.connect(url, options).then(
     err => {
         console.log("Error connecting Database instance due to: ", err);
     }
-);*/
+);
 
-
+/*
 var app = require('./app');
 // Cargamos el modulo de mongoose en una variable, que nos va a servir para trabajar con la db dentro de nuestra APIrest
 var mongoose = require('mongoose');
@@ -50,3 +50,4 @@ mongoose.connect('mongodb://localhost:27017/claro', { useNewUrlParser: true })
         });
     })
     .catch(err => console.log(err));
+*/
