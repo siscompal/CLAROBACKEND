@@ -15,7 +15,7 @@ async function createClient(req, res) {
 
     if (parametros.name && parametros.lastname && parametros.iden && parametros.email &&
         parametros.username && parametros.password && parametros.city && parametros.dir &&
-        parametros.cel && parametros.porcentaje && parametros.role) {
+        parametros.cel && parametros.porcentaje>=0 && parametros.role) {
         client.name = parametros.name;
         client.lastname = parametros.lastname;
         client.iden = parametros.iden;
@@ -228,7 +228,7 @@ function getMyClients(req, res) {
 
     var cliente = req.user.sub;
 
-    Client.find({ user: cliente }).exec((err, clientes) => {
+    Client.find({ user: cliente, status: true }).exec((err, clientes) => {
         // .populate('usuario', 'nombre apellidos') para solo devolver los campos que quiero.
         if (err) {
             res.status(500).send({ message: 'Error en la peticion' });
