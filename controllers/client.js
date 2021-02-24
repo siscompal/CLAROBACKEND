@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt-nodejs');
 const moment = require('moment');
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENGRID);
 
 //MODELOS
 const Client = require('../models/client');
