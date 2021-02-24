@@ -4,6 +4,9 @@
 const bcrypt = require('bcrypt-nodejs');
 const moment = require('moment');
 
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
+
 //MODELOS
 const Client = require('../models/client');
 
@@ -59,13 +62,31 @@ async function createClient(req, res) {
                                 if (!clientStored) {
                                     res.status(404).send({ message: 'No se ha registrado el cliente' });
                                 } else {
+                                    const msg = {
+                                                    
+                                        to: client.email,
+                                        from: 'no-reply@clarorecarga.com.co', // Use the email address or domain you verified above
+                                        subject: 'Registro Claro Recarga',
+                                        text: 'Bienvenido(a) a Claro Recarga',
+                                        html: '<h2>Bienvenido(a) a La Plataforma Claro Recargas</h2><hr><p><strong>Datos de Acceso</strong><br><br>Usuario: <strong>' + client.username + '  ' + '</strong> <br>Contraseña: <strong>'+parametros.password +'</strong></p><p>Contáctanos para obtener más información al  313-6500024 o escriba al correo soporteweb@siscompal.com<br><br>Gracias por preferirnos!!</p><p><hr><h5>Esta dirección de correo electrónico es únicamente para envíos automaticos de información y no está habilitado para recibir respuestas o consultas.</h5></p>',
+                                    };
+                                    
+                                    sgMail
+                                        .send(msg)
+                                        .then(() => {}, error => {
+                                        console.error(error);
+                                    
+                                        if (error.response) {
+                                            console.error(error.response.body)
+                                        }
+                                        });
                                     res.status(200).send({ clienteGuardado: clientStored });
                                 }
                             }
                         });
                     });
                 } else {
-                    res.status(404).send({ message: 'Cliente existente' });
+                    res.status(401).send({ message: 'Cliente existente' });
                 }
             }
         });
@@ -125,13 +146,32 @@ async function register(req, res) {
                                 if (!clientStored) {
                                     res.status(404).send({ message: 'No se ha registrado el cliente' });
                                 } else {
+                                    const msg = {
+                                                    
+                                        to: client.email,
+                                        from: 'no-reply@clarorecarga.com.co', // Use the email address or domain you verified above
+                                        subject: 'Registro Claro Recarga',
+                                        text: 'Bienvenido(a) a Claro Recarga',
+                                        html: '<h2>Bienvenido(a) a La Plataforma Claro Recargas</h2><hr><p><strong>Datos de Acceso</strong><br><br>Usuario: <strong>' + client.username + '  ' + '</strong> <br>Contraseña: <strong>'+parametros.password +'</strong></p><p>Contáctanos para obtener más información al  313-6500024 o esciba al correo soporteweb@siscompal.com<br><br>Gracias por preferirnos!!</p><p><hr><h5>Está dirección de correo electronico es únicamente para envíos automáticos de información y no está habilitado para recibir respuestas o consultas</h5></p>',
+                                    };
+                                    
+                                    sgMail
+                                        .send(msg)
+                                        .then(() => {}, error => {
+                                        console.error(error);
+                                    
+                                        if (error.response) {
+                                            console.error(error.response.body)
+                                        }
+                                        });
+                                    
                                     res.status(200).send({ clienteGuardado: clientStored });
                                 }
                             }
                         });
                     });
                 } else {
-                    res.status(404).send({ message: 'Nombre de usuario no disponible' });
+                    res.status(401).send({ message: 'Nombre de usuario no disponible' });
                 }
             }
         });
@@ -150,7 +190,7 @@ function updateClient(req, res) {
     Client.findByIdAndUpdate(clientId, update, { new: true }, (err, clientUpdated) => {
         if (err) {
             return res.status(500).send({
-               		 message: 'Error al actualizar cliente',
+            message: 'Error al actualizar cliente',
             });
         } else {
             if (!clientUpdated) {
